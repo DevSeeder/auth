@@ -73,11 +73,11 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
         this.model.deleteOne({ id });
     }
 
-    async find(
+    async find<ResponseDB>(
         searchParams: any,
         select: any = {},
         sort: any = {}
-    ): Promise<any[]> {
+    ): Promise<Array<ResponseDB & MongooseDocument>> {
         if (Object.keys(select).length === 0) select = { _id: 0 };
 
         let res = this.model.find(searchParams);
