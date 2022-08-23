@@ -1,53 +1,49 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LocalAuthGuard } from '../../../src/local/local-auth.guard';
-import { ScopesMongoose } from '../../../src/scopes/scope.repository';
-import { ScopesService } from '../../../src/scopes/scopes.service';
-import { UsersMongoose } from '../../../src/users/users.repository';
-import { UsersService } from '../../../src/users/users.service';
 import { mockAuthGuard } from '../../mock/guard/guard.mock';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
-import { mockUserMongoose } from '../../mock/repository/repository.mock';
 import {
-    mockAuthService,
-    mockScopesService,
-    mockUserService
-} from '../../mock/service/service.mock';
+    mockMongoose,
+    mockUserMongoose
+} from '../../mock/repository/repository.mock';
+import { mockAuthService } from '../../mock/service/service.mock';
 import { AuthController } from '../../../src/auth/auth.controller';
 import { AuthService } from '../../../src/auth/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { AuthModule } from '../../../src/auth/auth.module';
+import { User } from '../../../src/users/users.schema';
+import { getModelToken } from '@nestjs/mongoose';
+import { Scope } from '../../../src/scopes/scopes.schema';
+import { UsersMongoose } from '../../../src/users/users.repository';
+import { ScopesMongoose } from '../../../src/scopes/scope.repository';
 
-describe('AuthController', () => {
+describe('AuthModule', () => {
     let sut: AuthController;
 
     beforeEach(async () => {
         const app: TestingModule = await Test.createTestingModule({
+            imports: [AuthModule],
             controllers: [AuthController],
             providers: [
                 {
                     provide: AuthService,
                     useValue: mockAuthService
-                },
-                {
-                    provide: UsersService,
-                    useValue: mockUserService
-                },
-                {
-                    provide: ScopesService,
-                    useValue: mockScopesService
-                },
-                {
-                    provide: UsersMongoose,
-                    useValue: mockUserMongoose
-                },
-                {
-                    provide: ScopesMongoose,
-                    useValue: mockMongooseModel
                 }
             ]
         })
             .overrideGuard(LocalAuthGuard)
             .useValue(mockAuthGuard)
+            .overrideProvider(AuthService)
+            .useValue(mockAuthService)
+            .overrideProvider(UsersMongoose)
+            .useValue(mockUserMongoose)
+            .overrideProvider(ScopesMongoose)
+            .useValue(mockMongoose)
+            .overrideProvider(getModelToken(User.name))
+            .useValue(mockMongooseModel)
+            .overrideProvider(getModelToken(Scope.name))
+            .useValue(mockMongooseModel)
             .compile();
 
         sut = app.get<AuthController>(AuthController);

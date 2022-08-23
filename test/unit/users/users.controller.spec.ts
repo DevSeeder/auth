@@ -8,26 +8,22 @@ import { mockAuthGuard } from '../../mock/guard/guard.mock';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { mockUserMongoose } from '../../mock/repository/repository.mock';
 import {
-    mockAuthService,
     mockScopesService,
     mockUserService
 } from '../../mock/service/service.mock';
-import { AuthController } from '../../../src/auth/auth.controller';
-import { AuthService } from '../../../src/auth/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { UsersController } from '../../../src/users/users.controller';
+import { User } from '../../../src/users/users.schema';
+import { GrantScopeUserDTO } from '../../../src/dto/grant-scope-user.dto';
 
-describe('AuthController', () => {
-    let sut: AuthController;
+describe('UsersController', () => {
+    let sut: UsersController;
 
     beforeEach(async () => {
         const app: TestingModule = await Test.createTestingModule({
-            controllers: [AuthController],
+            controllers: [UsersController],
             providers: [
-                {
-                    provide: AuthService,
-                    useValue: mockAuthService
-                },
                 {
                     provide: UsersService,
                     useValue: mockUserService
@@ -50,31 +46,49 @@ describe('AuthController', () => {
             .useValue(mockAuthGuard)
             .compile();
 
-        sut = app.get<AuthController>(AuthController);
+        sut = app.get<UsersController>(UsersController);
     });
 
-    const mockRequest = {
-        headers: {
-            authorization: 'any'
-        }
-    };
-
-    describe('login', () => {
-        it('should call login and return a json with token', async () => {
-            const mockResponseToken = {
-                token: 'any_token'
+    describe('createUser', () => {
+        it('should call createUser correctly', async () => {
+            const mockResponse = {
+                success: true,
+                response: 'User successfully created!'
             };
 
-            const authServiceStub = sinon
-                .stub(mockAuthService, 'loginWithCredentials')
-                .returns(mockResponseToken);
+            const mockUser = new User();
+            mockUser.username = 'any_username';
+            mockUser.password = 'any_password';
 
-            const actual = await sut.login(mockRequest, ['scope1', 'scope2']);
+            const authServiceStub = sinon
+                .stub(mockUserService, 'createUser')
+                .returns(mockResponse);
+
+            const actual = await sut.createUser(mockUser);
             expect(JSON.stringify(actual)).to.be.equal(
-                JSON.stringify(mockResponseToken)
+                JSON.stringify(mockResponse)
             );
 
             authServiceStub.restore();
+        });
+    });
+
+    describe('grantscope', () => {
+        it('should call grantscope correctly', async () => {
+            const mockDTO = new GrantScopeUserDTO();
+            mockDTO.username = 'any_username';
+            mockDTO.scopes = ['scope1', 'scope2'];
+
+            const userServiceSpy = sinon.spy(
+                mockUserService,
+                'grantScopeForUser'
+            );
+
+            await sut.grantScopeForUser(mockDTO);
+
+            sinon.assert.calledOnceWithExactly(userServiceSpy, mockDTO);
+
+            userServiceSpy.restore();
         });
     });
 });

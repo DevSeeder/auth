@@ -8,26 +8,23 @@ import { mockAuthGuard } from '../../mock/guard/guard.mock';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { mockUserMongoose } from '../../mock/repository/repository.mock';
 import {
-    mockAuthService,
     mockScopesService,
     mockUserService
 } from '../../mock/service/service.mock';
-import { AuthController } from '../../../src/auth/auth.controller';
 import { AuthService } from '../../../src/auth/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { mockJWTService } from '../../mock/service/jwt-service.mock';
+import { JwtService } from '@nestjs/jwt';
 
-describe('AuthController', () => {
-    let sut: AuthController;
+describe('AuthService', () => {
+    let sut: AuthService;
 
     beforeEach(async () => {
         const app: TestingModule = await Test.createTestingModule({
-            controllers: [AuthController],
+            controllers: [],
             providers: [
-                {
-                    provide: AuthService,
-                    useValue: mockAuthService
-                },
+                AuthService,
                 {
                     provide: UsersService,
                     useValue: mockUserService
@@ -43,6 +40,10 @@ describe('AuthController', () => {
                 {
                     provide: ScopesMongoose,
                     useValue: mockMongooseModel
+                },
+                {
+                    provide: JwtService,
+                    useValue: mockJWTService
                 }
             ]
         })
@@ -50,7 +51,7 @@ describe('AuthController', () => {
             .useValue(mockAuthGuard)
             .compile();
 
-        sut = app.get<AuthController>(AuthController);
+        sut = app.get<AuthService>(AuthService);
     });
 
     const mockRequest = {
@@ -59,17 +60,20 @@ describe('AuthController', () => {
         }
     };
 
-    describe('login', () => {
-        it('should call login and return a json with token', async () => {
+    describe('loginWithCredentials', () => {
+        it('should call loginWithCredentials and return a JSON token', async () => {
             const mockResponseToken = {
                 token: 'any_token'
             };
 
             const authServiceStub = sinon
-                .stub(mockAuthService, 'loginWithCredentials')
-                .returns(mockResponseToken);
+                .stub(mockJWTService, 'sign')
+                .returns('any_token');
 
-            const actual = await sut.login(mockRequest, ['scope1', 'scope2']);
+            const actual = await sut.loginWithCredentials('any', [
+                'scope1',
+                'scope2'
+            ]);
             expect(JSON.stringify(actual)).to.be.equal(
                 JSON.stringify(mockResponseToken)
             );

@@ -13,7 +13,7 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Scopes(EnumAuthScopes.CREATE_USER)
     @Post('/create')
-    async login(@Body() user: User) {
+    async createUser(@Body() user: User) {
         return this.userService.createUser(user);
     }
 

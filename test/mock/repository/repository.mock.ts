@@ -7,5 +7,14 @@ export const mockUserMongoose = {
     },
     getScopesByUser: () => {
         return [];
+    },
+    find: () => {
+        return [];
+    }
+};
+
+export const mockMongoose = {
+    find: () => {
+        return [];
     }
 };
