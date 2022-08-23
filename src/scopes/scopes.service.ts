@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+    Injectable,
+    Logger,
+    NotAcceptableException,
+    NotFoundException
+} from '@nestjs/common';
 import { ScopesMongoose } from './scope.repository';
 import * as dotenv from 'dotenv';
 
@@ -10,6 +15,15 @@ export class ScopesService {
 
     constructor(private scopeRepository: ScopesMongoose) {}
 
+    async validateScopes(scopes: string[]): Promise<void> {
+        if (scopes.length === 0)
+            throw new NotAcceptableException('Empty Scopes');
+
+        for await (const item of scopes) {
+            await this.validateScopeById(item);
+        }
+    }
+
     async validateScopeById(scopeID: string): Promise<void> {
         this.logger.log(`Validating Scope...`);
         const scopeRes = this.scopeRepository.find({
@@ -17,6 +31,6 @@ export class ScopesService {
         });
 
         if ((await scopeRes).length === 0)
-            throw new NotFoundException(`Scope ${scopeID} is invalid!`);
+            throw new NotFoundException(`Scope '${scopeID}' is invalid!`);
     }
 }

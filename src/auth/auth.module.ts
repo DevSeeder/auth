@@ -5,10 +5,12 @@ import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../jwt/jwt.strategy';
 import { UsersModule } from '../users/users.module';
+import { ScopesModule } from 'src/scopes/scopes.module';
 
 @Module({
     imports: [
         UsersModule,
+        ScopesModule,
         PassportModule,
         JwtModule.register({
             secret: 'jwtConstants.secret',

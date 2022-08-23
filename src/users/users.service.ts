@@ -1,4 +1,5 @@
 import {
+    ForbiddenException,
     Injectable,
     Logger,
     NotAcceptableException,
@@ -63,12 +64,7 @@ export class UsersService {
 
         if (userDB.length === 0) throw new NotFoundException('User not found!');
 
-        if (scopeDTO.scopes.length === 0)
-            throw new NotAcceptableException('Empty Scopes');
-
-        scopeDTO.scopes.forEach(async (item) => {
-            await this.scopeService.validateScopeById(item);
-        });
+        await this.scopeService.validateScopes(scopeDTO.scopes);
 
         this.logger.log(`Grating user scopes...`);
 
@@ -76,5 +72,19 @@ export class UsersService {
             scopeDTO.username,
             scopeDTO.scopes
         );
+    }
+
+    async validateScopesForUser(
+        username: string,
+        scopes: string[]
+    ): Promise<void> {
+        const userScopesDB = await this.userRepository.getScopesByUser(
+            username
+        );
+
+        for (const item of scopes) {
+            if (userScopesDB.indexOf(item) === -1)
+                throw new ForbiddenException(`Forbidden Scope '${item}'`);
+        }
     }
 }
