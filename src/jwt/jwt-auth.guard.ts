@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { EnumAuthScopes } from 'src/enum/enum-auth-scopes.enum';
-import { AuthenticatorExtractorHelper } from 'src/helper/authenticator-extractor.helper';
+import { EnumAuthScopes } from '../enum/enum-auth-scopes.enum';
+import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {

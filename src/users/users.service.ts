@@ -8,8 +8,8 @@ import { UsersMongoose } from './users.repository';
 import { User } from './users.schema';
 import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
-import { ScopesService } from 'src/scopes/scopes.service';
-import { GrantScopeUserDTO } from 'src/dto/grant-scope-user.dto';
+import { ScopesService } from '../scopes/scopes.service';
+import { GrantScopeUserDTO } from '../dto/grant-scope-user.dto';
 
 dotenv.config();
 

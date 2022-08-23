@@ -29,13 +29,15 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "bcrypt": "^5.0.1",
+    "chai": "^4.3.6",
     "dotenv": "^16.0.1",
     "mongoose": "^6.5.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sinon": "^14.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
@@ -68,15 +70,20 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/main.ts",
+      "/src/app.module.ts",
+      "/src/config/database"
+    ],
     "testEnvironment": "node"
   }
 }

@@ -5,8 +5,8 @@ import {
     UnauthorizedException
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthenticatorExtractorHelper } from 'src/helper/authenticator-extractor.helper';
-import { UsersService } from 'src/users/users.service';
+import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') implements CanActivate {

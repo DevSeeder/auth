@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticatorExtractorHelper } from 'src/helper/authenticator-extractor.helper';
-import { ScopesService } from 'src/scopes/scopes.service';
-import { UsersService } from 'src/users/users.service';
+import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
+import { ScopesService } from '../scopes/scopes.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
         const payload = { username: user.username, scopes: scopes };
 
         return {
-            access_token: this.jwtTokenService.sign(payload)
+            token: this.jwtTokenService.sign(payload)
         };
     }
 }
