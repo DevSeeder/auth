@@ -12,4 +12,22 @@ export class UsersMongoose extends MongooseRepository<User, UserDocument> {
     ) {
         super(model);
     }
+
+    async createUser(user: User) {
+        user.scopes = [];
+        return this.insertOne(user, 'User');
+    }
+
+    async updateAddUserScopes(username: string, scopes: string[]) {
+        return this.updateOne(
+            {
+                username
+            },
+            {
+                $push: {
+                    scopes: { $each: scopes }
+                }
+            }
+        );
+    }
 }

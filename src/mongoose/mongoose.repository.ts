@@ -58,10 +58,21 @@ export abstract class MongooseRepository<Collection, MongooseModel> {
         return res;
     }
 
-    async updateOne(query: any, data: any): Promise<void> {
+    async updateOneSet(query: any, data: any): Promise<void> {
         this.model.findOneAndUpdate(
             query,
             { $set: data },
+            { upsert: false },
+            function (err: MongoError) {
+                if (err) throw err;
+            }
+        );
+    }
+
+    async updateOne(query: any, data: any): Promise<void> {
+        this.model.findOneAndUpdate(
+            query,
+            data,
             { upsert: false },
             function (err: MongoError) {
                 if (err) throw err;

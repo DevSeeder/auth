@@ -10,6 +10,9 @@ export class User {
 
     @Prop({ required: true })
     password: string;
+
+    @Prop({ required: false, type: Array })
+    scopes?: string[];
 }
 
 const schema = SchemaFactory.createForClass(User);
