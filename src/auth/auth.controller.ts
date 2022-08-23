@@ -6,7 +6,9 @@ import {
     Get,
     Body
 } from '@nestjs/common';
+import { EnumAuthScopes } from 'src/enum/enum-auth-scopes.enum';
 import { LocalAuthGuard } from 'src/local/local-auth.guard';
+import { Scopes } from 'src/scopes/scopes.decorator';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
 import { AuthService } from './auth.service';
 

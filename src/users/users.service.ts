@@ -2,7 +2,6 @@ import {
     ForbiddenException,
     Injectable,
     Logger,
-    NotAcceptableException,
     NotFoundException
 } from '@nestjs/common';
 import { UsersMongoose } from './users.repository';
