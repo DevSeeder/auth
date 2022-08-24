@@ -15,7 +15,7 @@ dotenv.config();
     imports: [
         UsersModule,
         ScopesModule,
-        PassportModule,
+        PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
