@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScopesModule } from '../scopes/scopes.module';
 import { UsersController } from './users.controller';
@@ -12,7 +13,7 @@ import { UsersService } from './users.service';
         ScopesModule
     ],
     controllers: [UsersController],
-    providers: [UsersService, UsersMongoose],
+    providers: [UsersService, UsersMongoose, JwtService],
     exports: [UsersService]
 })
 export class UsersModule {}

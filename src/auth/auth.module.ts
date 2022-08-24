@@ -20,7 +20,7 @@ dotenv.config();
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (config: ConfigService) => ({
-                secret: process.env.JWT_SALT,
+                secret: process.env.JWT_SECRET,
                 signOptions: {
                     expiresIn: config.get<string>('auth.jwt.expires')
                 }

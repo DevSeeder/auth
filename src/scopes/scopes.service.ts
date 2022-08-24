@@ -26,11 +26,11 @@ export class ScopesService {
 
     async validateScopeById(scopeID: string): Promise<void> {
         this.logger.log(`Validating Scope...`);
-        const scopeRes = this.scopeRepository.find({
+        const scopeRes = await this.scopeRepository.find({
             scopeID
         });
 
-        if ((await scopeRes).length === 0)
+        if (scopeRes.length === 0)
             throw new NotFoundException(`Scope '${scopeID}' is invalid!`);
     }
 }

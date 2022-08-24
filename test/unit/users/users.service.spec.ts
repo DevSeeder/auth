@@ -12,7 +12,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { User } from '../../../src/users/users.schema';
 import { GrantScopeUserDTO } from '../../../src/dto/grant-scope-user.dto';
-import * as bcrypt from 'bcrypt';
 
 const mockUser = new User();
 mockUser.username = 'any_username';

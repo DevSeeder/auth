@@ -5,31 +5,24 @@ import { UsersMongoose } from '../../../src/users/users.repository';
 import { UsersService } from '../../../src/users/users.service';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { mockUserMongoose } from '../../mock/repository/repository.mock';
-import {
-    mockScopesService,
-    mockUserService
-} from '../../mock/service/service.mock';
-import { AuthService } from '../../../src/auth/auth.service';
+import { mockUserService } from '../../mock/service/service.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mockJWTService } from '../../mock/service/jwt-service.mock';
 import { JwtService } from '@nestjs/jwt';
+import { Scope } from '../../../src/scopes/scopes.schema';
 
-describe('AuthService', () => {
-    let sut: AuthService;
+describe('ScopesService', () => {
+    let sut: ScopesService;
 
     beforeEach(async () => {
         const app: TestingModule = await Test.createTestingModule({
             controllers: [],
             providers: [
-                AuthService,
+                ScopesService,
                 {
                     provide: UsersService,
                     useValue: mockUserService
-                },
-                {
-                    provide: ScopesService,
-                    useValue: mockScopesService
                 },
                 {
                     provide: UsersMongoose,
@@ -46,34 +39,40 @@ describe('AuthService', () => {
             ]
         }).compile();
 
-        sut = app.get<AuthService>(AuthService);
+        sut = app.get<ScopesService>(ScopesService);
     });
 
-    const mockRequest = {
-        headers: {
-            authorization: 'any'
-        }
-    };
+    describe('validateScopes', () => {
+        it('should call validateScopes and do not throws errors', async () => {
+            const getStub = sinon
+                .stub(mockMongooseModel, 'find')
+                .returns([new Scope()]);
 
-    describe('loginWithCredentials', () => {
-        it('should call loginWithCredentials and return a JSON token', async () => {
-            const mockResponseToken = {
-                token: 'any_token'
-            };
+            await sut.validateScopes(['scope1', 'scope2']);
 
-            const authServiceStub = sinon
-                .stub(mockJWTService, 'sign')
-                .returns('any_token');
+            sinon.assert.calledTwice(getStub);
 
-            const actual = await sut.loginWithCredentials('any', [
-                'scope1',
-                'scope2'
-            ]);
-            expect(JSON.stringify(actual)).to.be.equal(
-                JSON.stringify(mockResponseToken)
-            );
+            getStub.restore();
+        });
 
-            authServiceStub.restore();
+        it('should call validateScopes and throws error for empty scopes', async () => {
+            try {
+                await sut.validateScopes([]);
+            } catch (err) {
+                expect(err.message).to.be.equal('Empty Scopes');
+            }
+        });
+
+        it('should call validateScopes and throws error for invalid scope', async () => {
+            const getStub = sinon.stub(mockMongooseModel, 'find').returns([]);
+
+            try {
+                await sut.validateScopes(['scope1', 'scope2']);
+            } catch (err) {
+                expect(err.message).to.be.equal(`Scope 'scope1' is invalid!`);
+            }
+
+            getStub.restore();
         });
     });
 });

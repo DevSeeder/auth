@@ -2,17 +2,22 @@ import {
     ExecutionContext,
     ForbiddenException,
     HttpException,
+    HttpStatus,
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { EnumAuthScopes } from '../enum/enum-auth-scopes.enum';
-import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
+// import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-    constructor(private reflector: Reflector) {
+    constructor(private reflector: Reflector, private jwtService: JwtService) {
         super();
     }
 
@@ -28,10 +33,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
                     'Wrong Authentication Type. Bearer Authentication is required'
                 );
 
-            const tokenPayload =
-                AuthenticatorExtractorHelper.extractBearerTokenAuth(
-                    request.headers.authorization
-                );
+            const bearerToken = request.headers.authorization.replace(
+                'Bearer ',
+                ''
+            );
+
+            const tokenPayload = await this.jwtService.verifyAsync(
+                bearerToken,
+                { secret: process.env.JWT_SECRET, ignoreExpiration: true }
+            );
 
             const scopes = this.reflector.get<string[]>(
                 'scopes',
@@ -51,7 +61,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             return true;
         } catch (err) {
-            throw new HttpException(`Error JWT Auth: ${err.message}`, 400);
+            throw new HttpException(
+                `Error JWT Auth: ${err.message}`,
+                HttpStatus.UNAUTHORIZED
+            );
         }
     }
 }
