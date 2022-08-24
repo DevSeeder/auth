@@ -16,6 +16,8 @@ import * as sinon from 'sinon';
 import { UsersController } from '../../../src/users/users.controller';
 import { User } from '../../../src/users/users.schema';
 import { GrantScopeUserDTO } from '../../../src/dto/grant-scope-user.dto';
+import { JwtService } from '@nestjs/jwt';
+import { mockJWTService } from '../../mock/service/jwt-service.mock';
 
 describe('UsersController', () => {
     let sut: UsersController;
@@ -39,6 +41,10 @@ describe('UsersController', () => {
                 {
                     provide: ScopesMongoose,
                     useValue: mockMongooseModel
+                },
+                {
+                    provide: JwtService,
+                    useValue: mockJWTService
                 }
             ]
         })

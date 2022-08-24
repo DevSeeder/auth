@@ -17,6 +17,8 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Scope } from '../../../src/scopes/scopes.schema';
 import { UsersMongoose } from '../../../src/users/users.repository';
 import { ScopesMongoose } from '../../../src/scopes/scope.repository';
+import { JwtService } from '@nestjs/jwt';
+import { mockJWTService } from '../../mock/service/jwt-service.mock';
 
 describe('AuthModule', () => {
     let sut: AuthController;
@@ -36,6 +38,8 @@ describe('AuthModule', () => {
             .useValue(mockAuthGuard)
             .overrideProvider(AuthService)
             .useValue(mockAuthService)
+            .overrideProvider(JwtService)
+            .useValue(mockJWTService)
             .overrideProvider(UsersMongoose)
             .useValue(mockUserMongoose)
             .overrideProvider(ScopesMongoose)
