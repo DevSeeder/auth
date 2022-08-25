@@ -4,7 +4,7 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
-[url-prod]: http://places.devseeder.com/api
+[url-prod]: http://auth.devseeder.com
 
   <p align="center">This project use <a href="https://github.com/nestjs/nest" target="_blank">NestJS</a>, a progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
 
@@ -77,11 +77,11 @@ After run the server, make a get in browser, postman or similar
 
 ```bash
 ## Login Route
-[url-prod]/auth/login
+{{ url-prod }}/auth/login
 ## Create User
-[url-prod]/users/create
+{{ url-prod }}/users/create
 ## Grant Scope
-[url-prod]/users/grantscope
+{{ url-prod }}/users/grantscope
 ```
 
 <!-- [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/) -->
