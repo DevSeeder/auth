@@ -22,7 +22,7 @@ export class JwtAuthGuard extends AbstractGuard {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         try {
             const bearerToken = this.getAuthToken(context, 'Bearer').replace(
-                'Bearer',
+                'Bearer ',
                 ''
             );
 
