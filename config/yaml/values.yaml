@@ -1,6 +1,7 @@
 auth:
     jwt:
         expires: '90000s'
+        secret: ${JWT_SECRET}
 database:
     mongodb:
         connection: 'mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL_CONNECTION}${MONGODB_DATABASE_NAME}${MONGODB_SUFIX_PARAMS}'
@@ -34,7 +35,7 @@ database:
                         city: 'channel-seed-neighborhoods-by-city'
                         state: 'channel-seed-neighborhoods-by-state'
 api:
-    port: 5000
+    port: ${API_PORT}
 doc:
     version: 1.0.0
     name: 'auth'
