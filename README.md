@@ -77,11 +77,11 @@ After run the server, make a get in browser, postman or similar
 
 ```bash
 ## Login Route
-{{ url-prod }}/auth/login
+[login][url-prod]/auth/login
 ## Create User
-{{ url-prod }}/users/create
+[Create User][url-prod]/users/create
 ## Grant Scope
-{{ url-prod }}/users/grantscope
+[Grant Scope][url-prod]/users/grantscope
 ```
 
 <!-- [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/) -->
