@@ -4,14 +4,11 @@ import {
     Logger,
     NotFoundException
 } from '@nestjs/common';
-import { UsersMongoose } from './users.repository';
-import { User } from './users.schema';
+import { UsersMongoose } from '../users.repository';
+import { User } from '../users.schema';
 import * as bcrypt from 'bcrypt';
-import * as dotenv from 'dotenv';
-import { ScopesService } from '../scopes/scopes.service';
-import { GrantScopeUserDTO } from '../../domain/dto/grant-scope-user.dto';
-
-dotenv.config();
+import { ScopesService } from '../../scopes/scopes.service';
+import { GrantScopeUserDTO } from '../../../domain/dto/grant-scope-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -21,24 +18,6 @@ export class UsersService {
         private readonly userRepository: UsersMongoose,
         private readonly scopeService: ScopesService
     ) {}
-
-    async createUser(user: User) {
-        user.password = this.generateUserHash(user.password);
-
-        this.logger.log(`Creating User '${user.username}'...`);
-
-        await this.userRepository.createUser(user);
-
-        return {
-            success: true,
-            response: 'User successfully created!'
-        };
-    }
-
-    private generateUserHash(value: string) {
-        const salt = bcrypt.genSaltSync(Number(process.env.ROUND_SALT));
-        return bcrypt.hashSync(value, salt);
-    }
 
     async getUserByUsername(username: string) {
         return this.userRepository.find<User>({

@@ -6,7 +6,8 @@ import { ScopesModule } from '../scopes/scopes.module';
 import { UsersController } from './users.controller';
 import { UsersMongoose } from './users.repository';
 import { User, UserSchema } from './users.schema';
-import { UsersService } from './users.service';
+import { UsersService } from './service/users.service';
+import { CreateUserService } from './service/create-user.service';
 
 @Module({
     imports: [
@@ -15,7 +16,7 @@ import { UsersService } from './users.service';
         PassportModule.register({ defaultStrategy: 'jwt' })
     ],
     controllers: [UsersController],
-    providers: [UsersService, UsersMongoose, JwtService],
-    exports: [UsersService]
+    providers: [UsersService, UsersMongoose, JwtService, CreateUserService],
+    exports: [UsersService, CreateUserService]
 })
 export class UsersModule {}
