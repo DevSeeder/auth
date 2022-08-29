@@ -1,4 +1,4 @@
-import { JWTPayload } from '../jwt/jwt-payload.interface';
+import { JWTPayload } from '../core/jwt/jwt-payload.interface';
 
 export class AuthenticatorExtractorHelper {
     static extractBasicAuth(authStr: string) {

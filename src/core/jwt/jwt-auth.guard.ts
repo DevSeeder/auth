@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { EnumAuthScopes } from '../enum/enum-auth-scopes.enum';
+import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
 import * as dotenv from 'dotenv';
 import { AbstractGuard } from '../guard/abstract-guard.guard';
 

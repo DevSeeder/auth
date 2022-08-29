@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongooseRepository } from '../mongoose/mongoose.repository';
+import { MongooseRepository } from '../../repository/mongoose/mongoose.repository';
 import { Scope, ScopeDocument } from './scopes.schema';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
+import { AuthenticatorExtractorHelper } from '../../helper/authenticator-extractor.helper';
 import { ScopesService } from '../scopes/scopes.service';
 import { UsersService } from '../users/users.service';
 

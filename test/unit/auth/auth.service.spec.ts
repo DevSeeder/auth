@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ScopesMongoose } from '../../../src/scopes/scope.repository';
-import { ScopesService } from '../../../src/scopes/scopes.service';
-import { UsersMongoose } from '../../../src/users/users.repository';
-import { UsersService } from '../../../src/users/users.service';
+import { ScopesMongoose } from '../../../src/microservice/scopes/scope.repository';
+import { ScopesService } from '../../../src/microservice/scopes/scopes.service';
+import { UsersMongoose } from '../../../src/microservice/users/users.repository';
+import { UsersService } from '../../../src/microservice/users/users.service';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { mockUserMongoose } from '../../mock/repository/repository.mock';
 import {
     mockScopesService,
     mockUserService
 } from '../../mock/service/service.mock';
-import { AuthService } from '../../../src/auth/auth.service';
+import { AuthService } from '../../../src/microservice/auth/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mockJWTService } from '../../mock/service/jwt-service.mock';

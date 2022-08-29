@@ -5,8 +5,8 @@ import {
     UnauthorizedException
 } from '@nestjs/common';
 import { AbstractGuard } from '../guard/abstract-guard.guard';
-import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
-import { UsersService } from '../users/users.service';
+import { AuthenticatorExtractorHelper } from '../../helper/authenticator-extractor.helper';
+import { UsersService } from '../../microservice/users/users.service';
 
 @Injectable()
 export class LocalAuthGuard extends AbstractGuard implements CanActivate {

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalAuthGuard } from '../../../src/local/local-auth.guard';
-import { ScopesMongoose } from '../../../src/scopes/scope.repository';
-import { ScopesService } from '../../../src/scopes/scopes.service';
-import { UsersMongoose } from '../../../src/users/users.repository';
-import { UsersService } from '../../../src/users/users.service';
+import { LocalAuthGuard } from '../../../src/core/local/local-auth.guard';
+import { ScopesMongoose } from '../../../src/microservice/scopes/scope.repository';
+import { ScopesService } from '../../../src/microservice/scopes/scopes.service';
+import { UsersMongoose } from '../../../src/microservice/users/users.repository';
+import { UsersService } from '../../../src/microservice/users/users.service';
 import { mockAuthGuard } from '../../mock/guard/guard.mock';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { mockUserMongoose } from '../../mock/repository/repository.mock';
@@ -12,8 +12,8 @@ import {
     mockScopesService,
     mockUserService
 } from '../../mock/service/service.mock';
-import { AuthController } from '../../../src/auth/auth.controller';
-import { AuthService } from '../../../src/auth/auth.service';
+import { AuthController } from '../../../src/microservice/auth/auth.controller';
+import { AuthService } from '../../../src/microservice/auth/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
