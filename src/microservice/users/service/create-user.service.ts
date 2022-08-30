@@ -24,11 +24,14 @@ export class CreateUserService {
 
         this.logger.log(`Creating User '${user.username}'...`);
 
-        await this.userRepository.createUser(user);
+        const id = await this.userRepository.createUser(user);
 
         return {
             success: true,
-            response: 'User successfully created!'
+            response: {
+                message: 'User successfully created!',
+                userId: id
+            }
         };
     }
 
