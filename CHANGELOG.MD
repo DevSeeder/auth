@@ -14,3 +14,12 @@ All notable changes to this project will be documented in this file.
 -   Scopes Schema
 -   JWT Validation
 -   Basic Auth Validation for Login
+
+## [2.0.0] - 2022-08-30
+
+### Added
+
+-   Login With ProjectKey
+-   Create User With ProjectKey
+-   Devseeder libs implementation
+-   Return id for created user
