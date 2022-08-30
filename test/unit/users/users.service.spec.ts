@@ -1,41 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalAuthGuard } from '../../../../src/core/local/local-auth.guard';
-import { ScopesMongoose } from '../../../../src/microservice/scopes/scope.repository';
-import { ScopesService } from '../../../../src/microservice/scopes/scopes.service';
-import { UsersMongoose } from '../../../../src/microservice/users/users.repository';
-import { GrantUserScopesService } from '../../../../src/microservice/users/service/grant-user-scopes.service';
-import { mockAuthGuard } from '../../../mock/guard/guard.mock';
-import { mockMongooseModel } from '../../../mock/repository/mongoose.mock';
-import { mockUserMongoose } from '../../../mock/repository/repository.mock';
-import { mockScopesService } from '../../../mock/service/service.mock';
+import { LocalAuthGuard } from '../../../src/local/local-auth.guard';
+import { ScopesMongoose } from '../../../src/scopes/scope.repository';
+import { ScopesService } from '../../../src/scopes/scopes.service';
+import { UsersMongoose } from '../../../src/users/users.repository';
+import { UsersService } from '../../../src/users/users.service';
+import { mockAuthGuard } from '../../mock/guard/guard.mock';
+import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
+import { mockUserMongoose } from '../../mock/repository/repository.mock';
+import { mockScopesService } from '../../mock/service/service.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../../src/microservice/users/users.schema';
-import { GrantScopeUserDTO } from '../../../../src/domain/dto/grant-scope-user.dto';
+import { User } from '../../../src/users/users.schema';
+import { GrantScopeUserDTO } from '../../../src/dto/grant-scope-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { mockJWTService } from '../../../mock/service/jwt-service.mock';
-import { ValidateUserService } from '../../../../src/microservice/users/service/validate-user.service';
-import { mockValidateUserService } from '../../../mock/service/user-service.mock';
+import { mockJWTService } from '../../mock/service/jwt-service.mock';
 
 const mockUser = new User();
 mockUser.username = 'any_username';
 mockUser.password = 'any_password';
 
-describe('GrantUserScopesService', () => {
-    let sut: GrantUserScopesService;
+describe('UsersService', () => {
+    let sut: UsersService;
 
     beforeEach(async () => {
         const app: TestingModule = await Test.createTestingModule({
             controllers: [],
             providers: [
-                GrantUserScopesService,
+                UsersService,
                 {
                     provide: ScopesService,
                     useValue: mockScopesService
-                },
-                {
-                    provide: ValidateUserService,
-                    useValue: mockValidateUserService
                 },
                 {
                     provide: UsersMongoose,
@@ -55,7 +49,19 @@ describe('GrantUserScopesService', () => {
             .useValue(mockAuthGuard)
             .compile();
 
-        sut = app.get<GrantUserScopesService>(GrantUserScopesService);
+        sut = app.get<UsersService>(UsersService);
+    });
+
+    describe('createUser', () => {
+        it('should call createUser correctly', async () => {
+            const createSpy = sinon.spy(mockUserMongoose, 'createUser');
+
+            await sut.createUser(mockUser);
+
+            sinon.assert.calledOnceWithExactly(createSpy, mockUser);
+
+            createSpy.restore();
+        });
     });
 
     describe('grantscope', () => {
@@ -65,13 +71,8 @@ describe('GrantUserScopesService', () => {
             mockDTO.scopes = ['scope1', 'scope2'];
 
             const getUserStub = sinon
-                .stub(mockValidateUserService, 'getUserByUsernameAndProject')
+                .stub(mockUserMongoose, 'find')
                 .returns([mockUser]);
-
-            const validateScopeStub = sinon.stub(
-                mockScopesService,
-                'validateScopes'
-            );
 
             const updateSpy = sinon.spy(
                 mockUserMongoose,
@@ -86,7 +87,6 @@ describe('GrantUserScopesService', () => {
             ]);
 
             updateSpy.restore();
-            validateScopeStub.restore();
             getUserStub.restore();
         });
 
@@ -96,7 +96,7 @@ describe('GrantUserScopesService', () => {
             mockDTO.scopes = ['scope1', 'scope2'];
 
             const getUserStub = sinon
-                .stub(mockValidateUserService, 'getUserByUsernameAndProject')
+                .stub(mockUserMongoose, 'find')
                 .returns([]);
 
             const updateSpy = sinon.spy(
@@ -113,6 +113,44 @@ describe('GrantUserScopesService', () => {
             sinon.assert.notCalled(updateSpy);
 
             updateSpy.restore();
+            getUserStub.restore();
+        });
+    });
+
+    describe('validateUserByCredentials', () => {
+        it('should call validateUserByCredentials correctly', async () => {
+            const mockUserDB = new User();
+            mockUserDB.password = 'any_password';
+
+            const getUserStub = sinon
+                .stub(mockUserMongoose, 'find')
+                .returns([mockUserDB]);
+
+            const validateStub = sinon.spy(sut, 'validateUserPassword');
+
+            await sut.validateUserByCredentials(mockUser);
+
+            sinon.assert.calledOnceWithExactly(
+                validateStub,
+                mockUser,
+                mockUserDB
+            );
+
+            getUserStub.restore();
+            validateStub.restore();
+        });
+
+        it('should call validateUserByCredentials adn thorws an error for user not found', async () => {
+            const getUserStub = sinon
+                .stub(mockUserMongoose, 'find')
+                .returns([]);
+
+            try {
+                await sut.validateUserByCredentials(mockUser);
+            } catch (err) {
+                expect(err.message).to.be.equal('User not found!');
+            }
+
             getUserStub.restore();
         });
     });

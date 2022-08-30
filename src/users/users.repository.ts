@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AuthMongooseRepository } from '../../repository/mongoose/auth-mongoose.repository';
+import { MongooseRepository } from '../mongoose/mongoose.repository';
 import { User, UserDocument } from './users.schema';
 
 @Injectable()
-export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
+export class UsersMongoose extends MongooseRepository<User, UserDocument> {
     constructor(
         @InjectModel(User.name)
         model: Model<UserDocument>
@@ -23,9 +23,10 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
             {
                 username
             },
-            {},
             {
-                scopes: { $each: scopes }
+                $push: {
+                    scopes: { $each: scopes }
+                }
             }
         );
     }
