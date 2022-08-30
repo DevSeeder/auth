@@ -5,10 +5,10 @@ import {
     NotFoundException
 } from '@nestjs/common';
 import { UsersMongoose } from '../users.repository';
-import { User } from '../users.schema';
-import * as bcrypt from 'bcrypt';
 import { ScopesService } from '../../scopes/scopes.service';
 import { GrantScopeUserDTO } from '../../../domain/dto/grant-scope-user.dto';
+import { ValidateUserService } from './validate-user.service';
+import { DTO } from '@devseeder/nestjs-microservices-commons';
 
 @Injectable()
 export class UsersService {
@@ -16,29 +16,17 @@ export class UsersService {
 
     constructor(
         private readonly userRepository: UsersMongoose,
+        private readonly getUserService: ValidateUserService,
         private readonly scopeService: ScopesService
     ) {}
 
-    async getUserByUsername(username: string) {
-        return this.userRepository.find<User>({
-            username
-        });
-    }
-
-    async validateUserByCredentials(user: User) {
-        const userDB = await this.getUserByUsername(user.username);
-
-        if (userDB.length === 0) return false;
-
-        return this.validateUserPassword(user, userDB[0]);
-    }
-
-    private validateUserPassword(user: User, userDB: User) {
-        return bcrypt.compareSync(user.password, userDB.password);
-    }
-
     async grantScopeForUser(scopeDTO: GrantScopeUserDTO): Promise<any> {
-        const userDB = await this.getUserByUsername(scopeDTO.username);
+        DTO.validateIsAnyEmptyKey(scopeDTO);
+
+        const userDB = await this.getUserService.getUserByUsernameAndProject(
+            scopeDTO.username,
+            scopeDTO.projectKey
+        );
 
         if (userDB.length === 0) throw new NotFoundException('User not found!');
 

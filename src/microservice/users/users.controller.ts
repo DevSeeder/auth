@@ -3,9 +3,9 @@ import { GrantScopeUserDTO } from '../../domain/dto/grant-scope-user.dto';
 import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
 import { JwtAuthGuard } from '../../core/jwt/jwt-auth.guard';
 import { Scopes } from '../scopes/scopes.decorator';
-import { User } from './users.schema';
 import { UsersService } from './service/users.service';
 import { CreateUserService } from './service/create-user.service';
+import { CreateUserDTO } from '../../domain/dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +17,7 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Scopes(EnumAuthScopes.CREATE_USER)
     @Post('/create')
-    async createUser(@Body() user: User) {
+    async createUser(@Body() user: CreateUserDTO) {
         return this.createUserService.createUser(user);
     }
 

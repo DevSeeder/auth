@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { UsersMongoose } from '../users.repository';
-import { User } from '../users.schema';
 import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
-import { ScopesService } from '../../scopes/scopes.service';
+import { ValidateUserService } from './validate-user.service';
+import { CreateUserDTO } from '../../../domain/dto/create-user.dto';
+import { DTO } from '@devseeder/nestjs-microservices-commons';
 
 dotenv.config();
 
@@ -13,11 +14,11 @@ export class CreateUserService {
 
     constructor(
         private readonly userRepository: UsersMongoose,
-        private readonly scopeService: ScopesService
+        private readonly validateUserService: ValidateUserService
     ) {}
 
-    async createUser(user: User) {
-        await this.validateIfUserExists(user.username, user.projectKey);
+    async createUser(user: CreateUserDTO) {
+        await this.validateUser(user);
 
         user.password = this.generateUserHash(user.password);
 
@@ -31,15 +32,18 @@ export class CreateUserService {
         };
     }
 
-    async validateIfUserExists(username: string, projectKey: string) {
-        const users = await this.userRepository.find({
-            username,
-            projectKey
-        });
+    async validateUser(user: CreateUserDTO) {
+        DTO.validateIsAnyEmptyKey(user);
+
+        const users =
+            await this.validateUserService.getUserByUsernameAndProject(
+                user.username,
+                user.projectKey
+            );
 
         if (users.length > 0) {
             throw new BadRequestException(
-                `User ${username} already exists for this project`
+                `User ${user.username} already exists for this project`
             );
         }
     }

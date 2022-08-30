@@ -8,6 +8,7 @@ import { UsersMongoose } from './users.repository';
 import { User, UserSchema } from './users.schema';
 import { UsersService } from './service/users.service';
 import { CreateUserService } from './service/create-user.service';
+import { ValidateUserService } from './service/validate-user.service';
 
 @Module({
     imports: [
@@ -16,7 +17,13 @@ import { CreateUserService } from './service/create-user.service';
         PassportModule.register({ defaultStrategy: 'jwt' })
     ],
     controllers: [UsersController],
-    providers: [UsersService, UsersMongoose, JwtService, CreateUserService],
-    exports: [UsersService, CreateUserService]
+    providers: [
+        UsersService,
+        UsersMongoose,
+        JwtService,
+        CreateUserService,
+        ValidateUserService
+    ],
+    exports: [UsersService, CreateUserService, ValidateUserService]
 })
 export class UsersModule {}

@@ -1,7 +1,7 @@
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 
-export class GrantScopeUserDTO extends DTO {
+export class CreateUserDTO extends DTO {
     username: string;
+    password: string;
     projectKey: string;
-    scopes: string[];
 }
