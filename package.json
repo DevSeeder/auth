@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@devseeder/microservices-exceptions": "file:../_packages/lib-test/microservices-exceptions",
     "@devseeder/nestjs-microservices-commons": "file:../_packages/lib-test/nestjs-microservices-commons",
     "@devseeder/nestjs-microservices-core": "file:../_packages/lib-test/nestjs-microservices-core",
     "@golevelup/ts-jest": "^0.3.3",
