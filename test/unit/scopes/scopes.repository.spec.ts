@@ -2,10 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../src/microservice/users/users.schema';
+import { User } from '../../../src/users/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
-import { Scope } from '../../../src/microservice/scopes/scopes.schema';
-import { ScopesMongoose } from '../../../src/microservice/scopes/scope.repository';
+import { Scope } from '../../../src/scopes/scopes.schema';
+import { ScopesMongoose } from '../../../src/scopes/scope.repository';
 
 const mockUser = new User();
 mockUser.username = 'any_username';

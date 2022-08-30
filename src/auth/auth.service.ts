@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticatorExtractorHelper } from '../../helper/authenticator-extractor.helper';
+import { AuthenticatorExtractorHelper } from '../helper/authenticator-extractor.helper';
 import { ScopesService } from '../scopes/scopes.service';
-import { GrantUserScopesService } from '../users/service/grant-user-scopes.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtTokenService: JwtService,
-        private readonly usersService: GrantUserScopesService,
+        private readonly usersService: UsersService,
         private readonly scopesService: ScopesService
     ) {}
 
