@@ -6,7 +6,7 @@ import { ScopesModule } from '../scopes/scopes.module';
 import { UsersController } from './users.controller';
 import { UsersMongoose } from './users.repository';
 import { User, UserSchema } from './users.schema';
-import { UsersService } from './service/users.service';
+import { GrantUserScopesService } from './service/grant-user-scopes.service';
 import { CreateUserService } from './service/create-user.service';
 import { ValidateUserService } from './service/validate-user.service';
 
@@ -18,12 +18,12 @@ import { ValidateUserService } from './service/validate-user.service';
     ],
     controllers: [UsersController],
     providers: [
-        UsersService,
+        GrantUserScopesService,
         UsersMongoose,
         JwtService,
         CreateUserService,
         ValidateUserService
     ],
-    exports: [UsersService, CreateUserService, ValidateUserService]
+    exports: [GrantUserScopesService, CreateUserService, ValidateUserService]
 })
 export class UsersModule {}

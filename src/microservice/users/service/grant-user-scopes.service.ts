@@ -11,7 +11,7 @@ import { ValidateUserService } from './validate-user.service';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 
 @Injectable()
-export class UsersService {
+export class GrantUserScopesService {
     private readonly logger = new Logger(this.constructor.name);
 
     constructor(

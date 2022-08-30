@@ -19,6 +19,8 @@ import { UsersMongoose } from '../../../src/microservice/users/users.repository'
 import { ScopesMongoose } from '../../../src/microservice/scopes/scope.repository';
 import { JwtService } from '@nestjs/jwt';
 import { mockJWTService } from '../../mock/service/jwt-service.mock';
+import { ConfigService } from '@nestjs/config';
+import { JwtAuthGuard } from '../../../src/core/jwt/jwt-auth.guard';
 
 describe('AuthModule', () => {
     let sut: AuthController;
@@ -31,10 +33,20 @@ describe('AuthModule', () => {
                 {
                     provide: AuthService,
                     useValue: mockAuthService
+                },
+                {
+                    provide: ConfigService,
+                    useValue: {
+                        get: () => {
+                            return '';
+                        }
+                    }
                 }
             ]
         })
             .overrideGuard(LocalAuthGuard)
+            .useValue(mockAuthGuard)
+            .overrideGuard(JwtAuthGuard)
             .useValue(mockAuthGuard)
             .overrideProvider(AuthService)
             .useValue(mockAuthService)
@@ -48,6 +60,12 @@ describe('AuthModule', () => {
             .useValue(mockMongooseModel)
             .overrideProvider(getModelToken(Scope.name))
             .useValue(mockMongooseModel)
+            .overrideProvider(ConfigService)
+            .useValue({
+                get: () => {
+                    return '';
+                }
+            })
             .compile();
 
         sut = app.get<AuthController>(AuthController);

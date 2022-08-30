@@ -55,11 +55,8 @@ describe('UsersMongoose', () => {
                 {
                     username: 'any_user'
                 },
-                {
-                    $push: {
-                        scopes: { $each: ['scope1', 'scope2'] }
-                    }
-                }
+                {},
+                { scopes: { $each: ['scope1', 'scope2'] } }
             );
 
             updateSpy.restore();
