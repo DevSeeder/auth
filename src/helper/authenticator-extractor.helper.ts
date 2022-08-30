@@ -1,4 +1,4 @@
-import { JWTPayload } from '../jwt/jwt-payload.interface';
+import { JWTPayload } from '@devseeder/nestjs-microservices-core';
 
 export class AuthenticatorExtractorHelper {
     static extractBasicAuth(authStr: string) {

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersMongoose } from '../../../src/users/users.repository';
+import { UsersMongoose } from '../../../src/microservice/users/users.repository';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../src/users/users.schema';
+import { User } from '../../../src/microservice/users/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
 
 const mockUser = new User();
@@ -55,11 +55,8 @@ describe('UsersMongoose', () => {
                 {
                     username: 'any_user'
                 },
-                {
-                    $push: {
-                        scopes: { $each: ['scope1', 'scope2'] }
-                    }
-                }
+                {},
+                { scopes: { $each: ['scope1', 'scope2'] } }
             );
 
             updateSpy.restore();
