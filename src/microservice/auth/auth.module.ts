@@ -3,11 +3,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from '../jwt/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { ScopesModule } from '../scopes/scopes.module';
 import * as dotenv from 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from '@devseeder/nestjs-microservices-core';
 
 dotenv.config();
 
