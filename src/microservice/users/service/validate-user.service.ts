@@ -12,7 +12,7 @@ export class ValidateUserService {
     async getUserByUsernameAndProject(username: string, projectKey: string) {
         return this.userRepository.find<User>({
             username,
-            projectKey
+            projectKey: { $in: [projectKey, 'GLOBAL'] }
         });
     }
 
