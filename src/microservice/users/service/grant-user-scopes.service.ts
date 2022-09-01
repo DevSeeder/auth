@@ -34,7 +34,7 @@ export class GrantUserScopesService {
 
         this.logger.log(`Grating user scopes...`);
 
-        return this.userRepository.updateAddUserScopes(
+        await this.userRepository.updateAddUserScopes(
             scopeDTO.username,
             scopeDTO.scopes
         );

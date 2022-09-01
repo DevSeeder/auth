@@ -19,13 +19,14 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
     }
 
     async updateAddUserScopes(username: string, scopes: string[]) {
-        return this.updateOne(
+        return this.model.updateOne(
             {
                 username
             },
-            {},
             {
-                scopes: { $each: scopes }
+                $push: {
+                    scopes: { $each: scopes }
+                }
             }
         );
     }
