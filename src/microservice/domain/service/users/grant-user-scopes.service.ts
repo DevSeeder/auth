@@ -68,8 +68,21 @@ export class GrantUserScopesService {
         );
 
         for (const item of scopes) {
-            if (userScopesDB.indexOf(item) === -1)
+            const admScope = this.getAdmScope(item);
+            console.log('admScope');
+            console.log(admScope);
+            if (
+                userScopesDB.indexOf(item) === -1 &&
+                userScopesDB.indexOf(admScope) === -1
+            )
                 throw new ForbbidenScopeException(item);
         }
+    }
+
+    private getAdmScope(scope: string): string {
+        let scopeParts = scope.split('/');
+        scopeParts.pop();
+        scopeParts.push('ADM');
+        return scopeParts.join('/');
     }
 }
