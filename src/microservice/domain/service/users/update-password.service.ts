@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
     EnumInvalidPassErrorCode,
     InvalidPasswordException
@@ -9,8 +10,11 @@ import { UserService } from './user.service';
 
 @Injectable()
 export class UpdatePasswordService extends UserService {
-    constructor(protected readonly userRepository: UsersMongoose) {
-        super(userRepository);
+    constructor(
+        protected readonly userRepository: UsersMongoose,
+        protected configService: ConfigService
+    ) {
+        super(userRepository, configService);
     }
 
     async updatePassword(passwordDTO: UpdatePasswordDTO): Promise<void> {

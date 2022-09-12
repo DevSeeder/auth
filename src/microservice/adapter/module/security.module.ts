@@ -11,6 +11,7 @@ import { PasswordRecoveryService } from '../../domain/service/security/password-
 import { SecurityTokenService } from '../../domain/service/security/security-token.service';
 import { SecurityTokensMongoose } from '../repository/security-tokens.repository';
 import { JwtService } from '@nestjs/jwt';
+import { MailModule } from './mail.module';
 
 @Module({
     imports: [
@@ -18,7 +19,8 @@ import { JwtService } from '@nestjs/jwt';
             { name: SecurityToken.name, schema: SecurityTokenSchema }
         ]),
         UsersModule,
-        ScopesModule
+        ScopesModule,
+        MailModule
     ],
     controllers: [SecurityController],
     providers: [

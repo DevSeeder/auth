@@ -24,7 +24,7 @@ export class SecurityTokenService extends AbstractService {
         codeType: EnumCodeType,
         lenght,
         expires
-    ): Promise<void> {
+    ): Promise<string> {
         await this.inactivateActualTokens(type, userId);
 
         const token = new SecurityToken();
@@ -37,6 +37,7 @@ export class SecurityTokenService extends AbstractService {
         token.lenght = lenght;
         token.token = this.generateCode(codeType, lenght).toString();
         await this.securityTokenRepository.insertOne(token, 'Security Token');
+        return token.token;
     }
 
     async inactivateActualTokens(

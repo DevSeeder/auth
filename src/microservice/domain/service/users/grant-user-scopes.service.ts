@@ -13,15 +13,17 @@ import { User } from '../../schema/users.schema';
 import { CustomErrorException } from '@devseeder/microservices-exceptions';
 import { ForbbidenScopeException } from '../../../../core/error-handling/forbbiden-scope.exception';
 import { UserService } from './user.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GrantUserScopesService extends UserService {
     constructor(
         protected readonly userRepository: UsersMongoose,
         private readonly getUserService: ValidateUserService,
-        private readonly scopeService: ScopesService
+        private readonly scopeService: ScopesService,
+        protected configService: ConfigService
     ) {
-        super(userRepository);
+        super(userRepository, configService);
     }
 
     async grantScopeForUser(scopeDTO: GrantScopeUserDTO): Promise<any> {

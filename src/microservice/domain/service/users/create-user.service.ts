@@ -8,6 +8,7 @@ import { GrantUserScopesService } from './grant-user-scopes.service';
 import { EnumAuthScopes } from '../../enum/enum-auth-scopes.enum';
 import { UserService } from './user.service';
 import { UserAlreadyExistsException } from '../../../../core/error-handling/user-already-exists.exception';
+import { ConfigService } from '@nestjs/config';
 
 dotenv.config();
 
@@ -16,9 +17,10 @@ export class CreateUserService extends UserService {
     constructor(
         protected readonly userRepository: UsersMongoose,
         private readonly validateUserService: ValidateUserService,
-        private readonly grantScopesService: GrantUserScopesService
+        private readonly grantScopesService: GrantUserScopesService,
+        protected configService: ConfigService
     ) {
-        super(userRepository);
+        super(userRepository, configService);
     }
 
     async createUser(user: CreateUserDTO, actualUser: string) {

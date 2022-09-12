@@ -7,15 +7,21 @@ import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../schema/users.schema';
 import { NotFoundException } from '@devseeder/microservices-exceptions';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export abstract class UserService extends AbstractService {
-    constructor(protected readonly userRepository: UsersMongoose) {
+    constructor(
+        protected readonly userRepository: UsersMongoose,
+        protected configService: ConfigService
+    ) {
         super();
     }
 
     protected generateUserHash(value: string): string {
-        const salt = bcrypt.genSaltSync(Number(process.env.ROUND_SALT));
+        const salt = bcrypt.genSaltSync(
+            Number(this.configService.get('auth.password.round-salt'))
+        );
         return bcrypt.hashSync(value, salt);
     }
 

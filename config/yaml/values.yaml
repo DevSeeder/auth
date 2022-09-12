@@ -2,6 +2,15 @@ auth:
     jwt:
         expires: '90000s'
         secret: ${JWT_SECRET}
+    password:
+        round-salt: ${ROUND_SALT}
+email:
+    host: smtp.hostinger.com
+    port: 465
+    secure: true
+    sender: ${EMAIL_SENDER}
+    password: ${EMAIL_PASSWORD}
+
 database:
     mongodb:
         connection: 'mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL_CONNECTION}${MONGODB_DATABASE_NAME}${MONGODB_SUFIX_PARAMS}'
