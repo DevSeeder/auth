@@ -16,9 +16,6 @@ export class SecurityToken {
     @Prop({ required: false, type: String, default: EnumCodeType.NUMBER })
     codeType: EnumCodeType;
 
-    @Prop({ required: false, type: Number })
-    lenght: number;
-
     @Prop({ required: true })
     token: string;
 
@@ -39,6 +36,12 @@ export class SecurityToken {
 
     @Prop({ required: false, type: Date })
     processedDate: Date;
+
+    @Prop({ required: false })
+    validationToken: string;
+
+    @Prop({ required: false, type: Date })
+    expDateValidationToken: Date;
 }
 
 export class AttemptSecurityToken {
@@ -53,6 +56,9 @@ export class AttemptSecurityToken {
 
     @Prop({ required: true, type: Boolean, default: false })
     assert: boolean;
+
+    @Prop({ required: false, type: String })
+    errorMessage: string;
 }
 
 const schema = SchemaFactory.createForClass(SecurityToken);

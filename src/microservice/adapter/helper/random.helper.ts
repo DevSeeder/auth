@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { EnumBufferEncoding } from '../../domain/enum/buffer-encoding.enum';
 
 export class RandomHelper {

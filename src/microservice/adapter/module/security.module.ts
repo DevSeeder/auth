@@ -8,10 +8,11 @@ import {
 } from '../../domain/schema/security-tokens.schema';
 import { UsersModule } from './users.module';
 import { PasswordRecoveryService } from '../../domain/service/security/password-recovery.service';
-import { SecurityTokenService } from '../../domain/service/security/security-token.service';
+import { GenerateSecurityTokenService } from '../../domain/service/security/generate-security-token.service';
 import { SecurityTokensMongoose } from '../repository/security-tokens.repository';
 import { JwtService } from '@nestjs/jwt';
 import { MailModule } from './mail.module';
+import { ConfirmSecurityTokenService } from '../../domain/service/security/confirm-security-token.service';
 
 @Module({
     imports: [
@@ -25,14 +26,16 @@ import { MailModule } from './mail.module';
     controllers: [SecurityController],
     providers: [
         PasswordRecoveryService,
-        SecurityTokenService,
+        GenerateSecurityTokenService,
         SecurityTokensMongoose,
+        ConfirmSecurityTokenService,
         JwtService
     ],
     exports: [
         PasswordRecoveryService,
-        SecurityTokenService,
-        SecurityTokensMongoose
+        GenerateSecurityTokenService,
+        SecurityTokensMongoose,
+        ConfirmSecurityTokenService
     ]
 })
 export class SecurityModule {}

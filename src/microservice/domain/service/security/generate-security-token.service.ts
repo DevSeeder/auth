@@ -1,5 +1,11 @@
+import { NotFoundException } from '@devseeder/microservices-exceptions';
 import { AbstractService } from '@devseeder/nestjs-microservices-commons';
+import { CustomResponse } from '@devseeder/nestjs-microservices-core/dist/interface/custom-response.interface';
 import { Injectable } from '@nestjs/common';
+import {
+    EnumInvalidSecurityCodeErrorCode,
+    InvalidSecurityCodeException
+} from 'src/core/error-handling/invalid-security-code.exception';
 import { DateHelper } from '../../../adapter/helper/date.helper';
 import { RandomHelper } from '../../../adapter/helper/random.helper';
 import { SecurityTokensMongoose } from '../../../adapter/repository/security-tokens.repository';
@@ -10,7 +16,7 @@ import { SecurityToken } from '../../schema/security-tokens.schema';
 import { ValidateUserService } from '../users/validate-user.service';
 
 @Injectable()
-export class SecurityTokenService extends AbstractService {
+export class GenerateSecurityTokenService extends AbstractService {
     constructor(
         private securityTokenRepository: SecurityTokensMongoose,
         private validateUserService: ValidateUserService
@@ -34,7 +40,6 @@ export class SecurityTokenService extends AbstractService {
         token.expirationDate = DateHelper.SetAddDate(expires);
         token.tokenType = type;
         token.codeType = codeType;
-        token.lenght = lenght;
         token.token = this.generateCode(codeType, lenght).toString();
         await this.securityTokenRepository.insertOne(token, 'Security Token');
         return token.token;

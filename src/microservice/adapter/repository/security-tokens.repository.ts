@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
+    AttemptSecurityToken,
     SecurityToken,
     SecurityTokenDocument
 } from '../../domain/schema/security-tokens.schema';
 import { AuthMongooseRepository } from '../../domain/repository/mongoose/auth-mongoose.repository';
 import { EnumTokenType } from '../../domain/enum/enum-token-type.enum';
 import { DateHelper } from '../helper/date.helper';
+import { MongooseDocument } from '@devseeder/nestjs-microservices-commons';
 
 @Injectable()
 export class SecurityTokensMongoose extends AuthMongooseRepository<
@@ -21,8 +23,11 @@ export class SecurityTokensMongoose extends AuthMongooseRepository<
         super(model);
     }
 
-    inactiveActualTokens(type: EnumTokenType, userId: string) {
-        return this.model.updateOne(
+    async inactiveActualTokens(
+        type: EnumTokenType,
+        userId: string
+    ): Promise<void> {
+        await this.model.updateOne(
             {
                 tokenType: type,
                 userId
@@ -34,5 +39,47 @@ export class SecurityTokensMongoose extends AuthMongooseRepository<
                 }
             }
         );
+    }
+
+    async checkConfirmationCode(
+        userId: string,
+        tokenType: EnumTokenType,
+        code = ''
+    ): Promise<Array<SecurityToken & MongooseDocument>> {
+        const objSearch = {
+            userId,
+            active: true,
+            tokenType
+        };
+
+        if (code.length > 0) objSearch['token'] = code;
+
+        return this.model.find<SecurityToken>(objSearch);
+    }
+
+    async updateConfirmToken(
+        tokenId: string,
+        validationToken: string,
+        expDate: Date
+    ): Promise<void> {
+        await this.model.findByIdAndUpdate(tokenId, {
+            $set: {
+                active: false,
+                processedDate: DateHelper.GetDateNow(),
+                validationToken,
+                expDateValidationToken: expDate
+            }
+        });
+    }
+
+    async pushLogAttempt(
+        tokenId: string,
+        attempt: AttemptSecurityToken
+    ): Promise<void> {
+        await this.model.findByIdAndUpdate(tokenId, {
+            $push: {
+                attemps: attempt
+            }
+        });
     }
 }
