@@ -9,6 +9,9 @@ import { MailService } from '../mail/mail.service';
 import { MailSendingException } from 'src/core/error-handling/mail-sending.exception';
 import { User } from '../../schema/users.schema';
 import { ConfirmSecurityTokenService } from './confirm-security-token.service';
+import { ValidationTokenService } from './validation-token.service';
+import { UpdatePasswordService } from '../users/update-password.service';
+import { UpdatePasswordCodeDTO } from '../../dto/update-password.dto';
 
 const CODE_LENGHT = 6;
 const EXPIRES = '3h';
@@ -18,7 +21,9 @@ export class PasswordRecoveryService extends AbstractService {
     constructor(
         private securityTokenService: GenerateSecurityTokenService,
         private confirmSecurityTokenService: ConfirmSecurityTokenService,
+        private validationTokenService: ValidationTokenService,
         private validateUserService: ValidateUserService,
+        private updatePasswordService: UpdatePasswordService,
         private mailService: MailService
     ) {
         super();
@@ -82,5 +87,18 @@ export class PasswordRecoveryService extends AbstractService {
             throw new MailSendingException(err.message);
         }
         this.logger.log('Email successfully sent!');
+    }
+
+    async updateRecoverPassword(
+        passDto: UpdatePasswordCodeDTO
+    ): Promise<CustomResponse> {
+        await this.validationTokenService.checkValidationToken(
+            passDto.validationTokenId,
+            passDto.validationCode
+        );
+
+        await this.updatePasswordService.updatePassword(passDto, false);
+
+        return { success: true, response: 'Password successfully updated!' };
     }
 }

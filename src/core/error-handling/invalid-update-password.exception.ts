@@ -14,5 +14,6 @@ export class InvalidPasswordException extends CustomErrorException {
 export enum EnumInvalidPassErrorCode {
     INVALID_PASS = 40,
     INVALID_PASS_CONFIRM = 41,
-    INVALID_ACTUAL_PASS = 42
+    INVALID_ACTUAL_PASS = 42,
+    ACTUAL_PASS_EQUAL_NEW = 43
 }

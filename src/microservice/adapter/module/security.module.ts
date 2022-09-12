@@ -13,6 +13,7 @@ import { SecurityTokensMongoose } from '../repository/security-tokens.repository
 import { JwtService } from '@nestjs/jwt';
 import { MailModule } from './mail.module';
 import { ConfirmSecurityTokenService } from '../../domain/service/security/confirm-security-token.service';
+import { ValidationTokenService } from '../../../microservice/domain/service/security/validation-token.service';
 
 @Module({
     imports: [
@@ -29,13 +30,15 @@ import { ConfirmSecurityTokenService } from '../../domain/service/security/confi
         GenerateSecurityTokenService,
         SecurityTokensMongoose,
         ConfirmSecurityTokenService,
+        ValidationTokenService,
         JwtService
     ],
     exports: [
         PasswordRecoveryService,
         GenerateSecurityTokenService,
         SecurityTokensMongoose,
-        ConfirmSecurityTokenService
+        ConfirmSecurityTokenService,
+        ValidationTokenService
     ]
 })
 export class SecurityModule {}

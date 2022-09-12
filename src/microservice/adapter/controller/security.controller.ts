@@ -2,7 +2,10 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
 import { JwtAuthGuard } from '../../../core/jwt/jwt-auth.guard';
 import { Scopes } from '@devseeder/nestjs-microservices-core';
-import { UpdatePasswordDTO } from '../../domain/dto/update-password.dto';
+import {
+    UpdatePasswordCodeDTO,
+    UpdatePasswordDTO
+} from '../../domain/dto/update-password.dto';
 import { UpdatePasswordService } from '../../domain/service/users/update-password.service';
 import {
     ForgotPasswordConfirmDTO,
@@ -39,5 +42,10 @@ export class SecurityController {
             passDTO.projectKey,
             passDTO.code
         );
+    }
+
+    @Post('/password/forgot/update')
+    async updateForgotPassword(@Body() passDTO: UpdatePasswordCodeDTO) {
+        return this.passwordRecoveryService.updateRecoverPassword(passDTO);
     }
 }

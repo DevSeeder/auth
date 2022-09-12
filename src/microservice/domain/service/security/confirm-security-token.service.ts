@@ -17,16 +17,12 @@ import {
     AttemptSecurityToken,
     SecurityToken
 } from '../../schema/security-tokens.schema';
-import { ValidateUserService } from '../users/validate-user.service';
 
 const MAX_ATTEMPTS = 3;
 
 @Injectable()
 export class ConfirmSecurityTokenService extends AbstractService {
-    constructor(
-        private securityTokenRepository: SecurityTokensMongoose,
-        private validateUserService: ValidateUserService
-    ) {
+    constructor(private securityTokenRepository: SecurityTokensMongoose) {
         super();
     }
 
@@ -82,12 +78,20 @@ export class ConfirmSecurityTokenService extends AbstractService {
             );
         }
 
-        if (tokensDB[0].attemps.length >= MAX_ATTEMPTS)
+        if (tokensDB[0].attemps.length >= MAX_ATTEMPTS) {
+            if (tokensDB[0].attemps.length == MAX_ATTEMPTS + 1) {
+                await this.securityTokenRepository.inactiveActualTokens(
+                    EnumTokenType.PASSWORD_RECOVERY,
+                    userId
+                );
+            }
+
             throw new InvalidSecurityCodeException(
                 'Too many attempts, please generate a new token',
                 tokensDB[0]._id,
                 EnumInvalidSecurityCodeErrorCode.MAX_ATTEMPTS
             );
+        }
 
         const tokens = await this.securityTokenRepository.checkConfirmationCode(
             userId,

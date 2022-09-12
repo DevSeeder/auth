@@ -42,6 +42,9 @@ export class SecurityToken {
 
     @Prop({ required: false, type: Date })
     expDateValidationToken: Date;
+
+    @Prop({ required: true, type: Boolean, default: false })
+    validated: boolean;
 }
 
 export class AttemptSecurityToken {

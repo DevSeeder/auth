@@ -17,8 +17,11 @@ export class UpdatePasswordService extends UserService {
         super(userRepository, configService);
     }
 
-    async updatePassword(passwordDTO: UpdatePasswordDTO): Promise<void> {
-        await this.validatePassword(passwordDTO);
+    async updatePassword(
+        passwordDTO: UpdatePasswordDTO,
+        actualValidate = true
+    ): Promise<void> {
+        await this.validatePassword(passwordDTO, actualValidate);
         await this.updateDBPassword(
             passwordDTO.username,
             passwordDTO.projectKey,
@@ -26,7 +29,10 @@ export class UpdatePasswordService extends UserService {
         );
     }
 
-    async validatePassword(passwordDTO: UpdatePasswordDTO): Promise<void> {
+    async validatePassword(
+        passwordDTO: UpdatePasswordDTO,
+        actualValidate = true
+    ): Promise<void> {
         if (passwordDTO.newPassword.length === 0)
             throw new InvalidPasswordException(
                 'Empty Password',
@@ -45,6 +51,7 @@ export class UpdatePasswordService extends UserService {
         );
 
         if (
+            actualValidate &&
             !this.validateUserPassword(
                 passwordDTO.actualPassword,
                 user.password
@@ -58,7 +65,7 @@ export class UpdatePasswordService extends UserService {
         if (this.validateUserPassword(passwordDTO.newPassword, user.password))
             throw new InvalidPasswordException(
                 `New password can't be equal actual password!`,
-                EnumInvalidPassErrorCode.INVALID_PASS
+                EnumInvalidPassErrorCode.ACTUAL_PASS_EQUAL_NEW
             );
     }
 

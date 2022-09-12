@@ -7,3 +7,8 @@ export class UpdatePasswordDTO extends DTO {
     newPassword: string;
     confirmPassword: string;
 }
+
+export class UpdatePasswordCodeDTO extends UpdatePasswordDTO {
+    validationCode: string;
+    validationTokenId: string;
+}

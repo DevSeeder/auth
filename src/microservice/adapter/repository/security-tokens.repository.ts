@@ -25,7 +25,8 @@ export class SecurityTokensMongoose extends AuthMongooseRepository<
 
     async inactiveActualTokens(
         type: EnumTokenType,
-        userId: string
+        userId: string,
+        validated = false
     ): Promise<void> {
         await this.model.updateOne(
             {
@@ -35,6 +36,7 @@ export class SecurityTokensMongoose extends AuthMongooseRepository<
             {
                 $set: {
                     active: false,
+                    validated,
                     inactivationDate: DateHelper.GetDateNow()
                 }
             }
