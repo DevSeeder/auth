@@ -1,5 +1,6 @@
 import {
     ForbiddenException,
+    HttpStatus,
     Injectable,
     Logger,
     NotFoundException
@@ -9,6 +10,8 @@ import { DTO } from '@devseeder/nestjs-microservices-commons';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import { ScopesService } from '../scopes.service';
 import { GrantScopeUserDTO } from '../../dto/grant-scope-user.dto';
+import { User } from '../../schema/users.schema';
+import { CustomErrorException } from '@devseeder/microservices-exceptions';
 
 @Injectable()
 export class GrantUserScopesService {
@@ -23,20 +26,34 @@ export class GrantUserScopesService {
     async grantScopeForUser(scopeDTO: GrantScopeUserDTO): Promise<any> {
         DTO.validateIsAnyEmptyKey(scopeDTO);
 
-        const userDB = await this.getUserService.getUserByUsernameAndProject(
-            scopeDTO.username,
-            scopeDTO.projectKey
-        );
+        const userDB: User[] =
+            await this.getUserService.getUserByUsernameAndProject(
+                scopeDTO.username,
+                scopeDTO.projectKey
+            );
 
         if (userDB.length === 0) throw new NotFoundException('User not found!');
 
-        await this.scopeService.validateScopes(scopeDTO.scopes);
+        const scopes = scopeDTO.scopes.filter((scope) => {
+            return userDB[0].scopes.indexOf(scope) == -1;
+        });
+
+        console.log('scopes -->');
+        console.log(scopes);
+
+        if (scopes.length === 0)
+            throw new CustomErrorException(
+                'All the Scopes are already in the user.',
+                HttpStatus.NOT_ACCEPTABLE
+            );
+
+        await this.scopeService.validateScopes(scopes);
 
         this.logger.log(`Grating user scopes...`);
 
         await this.userRepository.updateAddUserScopes(
             scopeDTO.username,
-            scopeDTO.scopes
+            scopes
         );
     }
 
