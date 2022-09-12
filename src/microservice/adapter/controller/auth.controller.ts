@@ -12,6 +12,7 @@ export class AuthController {
     async login(@Request() req, @Body() scopes: string[]) {
         return await this.authService.loginWithCredentials(
             req.headers.authorization,
+            req.headers.projectkey,
             scopes
         );
     }

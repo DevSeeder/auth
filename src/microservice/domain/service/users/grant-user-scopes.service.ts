@@ -1,5 +1,4 @@
 import {
-    ForbiddenException,
     HttpStatus,
     Injectable,
     Logger,
@@ -12,6 +11,7 @@ import { ScopesService } from '../scopes.service';
 import { GrantScopeUserDTO } from '../../dto/grant-scope-user.dto';
 import { User } from '../../schema/users.schema';
 import { CustomErrorException } from '@devseeder/microservices-exceptions';
+import { ForbbidenScopeException } from '../../../../core/error-handling/forbbiden-scope.exception';
 
 @Injectable()
 export class GrantUserScopesService {
@@ -59,15 +59,17 @@ export class GrantUserScopesService {
 
     async validateScopesForUser(
         username: string,
+        projectKey: string,
         scopes: string[]
     ): Promise<void> {
         const userScopesDB = await this.userRepository.getScopesByUser(
-            username
+            username,
+            projectKey
         );
 
         for (const item of scopes) {
             if (userScopesDB.indexOf(item) === -1)
-                throw new ForbiddenException(`Forbidden Scope '${item}'`);
+                throw new ForbbidenScopeException(item);
         }
     }
 }

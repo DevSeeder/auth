@@ -12,12 +12,20 @@ export class AuthService {
         private readonly scopesService: ScopesService
     ) {}
 
-    async loginWithCredentials(headerAuth: string, scopes: string[]) {
+    async loginWithCredentials(
+        headerAuth: string,
+        projectKey: string,
+        scopes: string[]
+    ) {
         const user = AuthenticatorExtractorHelper.extractBasicAuth(headerAuth);
 
         await this.scopesService.validateScopes(scopes);
 
-        await this.usersService.validateScopesForUser(user.username, scopes);
+        await this.usersService.validateScopesForUser(
+            user.username,
+            projectKey,
+            scopes
+        );
 
         const payload = { username: user.username, scopes: scopes };
 

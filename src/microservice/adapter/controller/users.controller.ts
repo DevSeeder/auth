@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { GrantScopeUserDTO } from '../../domain/dto/grant-scope-user.dto';
 import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
 import { JwtAuthGuard } from '../../../core/jwt/jwt-auth.guard';
@@ -6,6 +6,7 @@ import { Scopes } from '../../domain/decorator/scopes.decorator';
 import { GrantUserScopesService } from '../../domain/service/users/grant-user-scopes.service';
 import { CreateUserService } from '../../domain/service/users/create-user.service';
 import { CreateUserDTO } from '../../domain/dto/create-user.dto';
+import { GetUser } from 'src/microservice/domain/decorator/get-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -17,8 +18,8 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Scopes(EnumAuthScopes.CREATE_USER)
     @Post('/create')
-    async createUser(@Body() user: CreateUserDTO) {
-        return this.createUserService.createUser(user);
+    async createUser(@Body() user: CreateUserDTO, @GetUser() actualUser) {
+        return this.createUserService.createUser(user, actualUser);
     }
 
     @UseGuards(JwtAuthGuard)

@@ -31,10 +31,18 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
         );
     }
 
-    async getScopesByUser(username: string): Promise<string[]> {
+    async getScopesByUser(
+        username: string,
+        projectKey: string
+    ): Promise<string[]> {
+        console.log({
+            username,
+            projectKey: { $in: [projectKey, 'GLOBAL'] }
+        });
         const response = await this.find<User>(
             {
-                username
+                username,
+                projectKey: { $in: [projectKey, 'GLOBAL'] }
             },
             { scopes: 1 }
         );

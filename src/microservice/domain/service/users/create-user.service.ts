@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+    BadRequestException,
+    HttpStatus,
+    Injectable,
+    Logger
+} from '@nestjs/common';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
@@ -6,6 +11,9 @@ import { ValidateUserService } from './validate-user.service';
 import { CreateUserDTO } from '../../dto/create-user.dto';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 import { GrantUserScopesService } from './grant-user-scopes.service';
+import { User } from '../../schema/users.schema';
+import { ForbbidenScopeException } from 'src/core/error-handling/forbbiden-scope.exception';
+import { EnumAuthScopes } from '../../enum/enum-auth-scopes.enum';
 
 dotenv.config();
 
@@ -19,21 +27,27 @@ export class CreateUserService {
         private readonly grantScopesService: GrantUserScopesService
     ) {}
 
-    async createUser(user: CreateUserDTO) {
+    async createUser(user: CreateUserDTO, actualUser: string) {
         const scopes = user.scopes;
 
         await this.validateUser(user);
+
+        if (scopes && scopes.length > 0)
+            await this.grantScopesService.validateScopesForUser(
+                actualUser,
+                'AUTH',
+                [EnumAuthScopes.GRANT_SCOPE]
+            );
 
         user.password = this.generateUserHash(user.password);
 
         this.logger.log(`Creating User '${user.username}'...`);
         const id = await this.userRepository.createUser(user);
 
-        if (scopes && scopes.length > 0)
-            await this.grantScopesService.grantScopeForUser({
-                ...user,
-                scopes
-            });
+        await this.grantScopesService.grantScopeForUser({
+            ...user,
+            scopes
+        });
 
         return {
             success: true,
