@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersMongoose } from '../../../src/microservice/users/users.repository';
+import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
 import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../src/microservice/users/users.schema';
+import { User } from '../../../src/microservice/domain/schema/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
 
 const mockUser = new User();

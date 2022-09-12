@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ScopesMongoose } from './scope.repository';
-import { Scope, ScopeSchema } from './scopes.schema';
-import { ScopesService } from './scopes.service';
+import { ScopesMongoose } from '../repository/scope.repository';
+import { Scope, ScopeSchema } from '../../domain/schema/scopes.schema';
+import { ScopesService } from '../../domain/service/scopes.service';
 
 @Module({
     imports: [

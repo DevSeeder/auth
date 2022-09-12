@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { UsersMongoose } from '../users.repository';
+import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
 import { ValidateUserService } from './validate-user.service';
-import { CreateUserDTO } from '../../../domain/dto/create-user.dto';
+import { CreateUserDTO } from '../../dto/create-user.dto';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 import { GrantUserScopesService } from './grant-user-scopes.service';
 

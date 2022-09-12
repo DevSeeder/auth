@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LocalAuthGuard } from '../../../../src/core/local/local-auth.guard';
-import { UsersMongoose } from '../../../../src/microservice/users/users.repository';
+import { UsersMongoose } from '../../../../src/microservice/adapter/repository/users.repository';
 import { GrantUserScopesService } from '../../../../src/microservice/users/service/grant-user-scopes.service';
 import { mockAuthGuard } from '../../../mock/guard/guard.mock';
 import { mockUserMongoose } from '../../../mock/repository/repository.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../../src/microservice/users/users.schema';
+import { User } from '../../../../src/microservice/domain/schema/users.schema';
 import { JwtService } from '@nestjs/jwt';
 import { mockJWTService } from '../../../mock/service/jwt-service.mock';
 import { ValidateUserService } from '../../../../src/microservice/users/service/validate-user.service';

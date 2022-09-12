@@ -1,10 +1,10 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { GrantScopeUserDTO } from '../../domain/dto/grant-scope-user.dto';
 import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
-import { JwtAuthGuard } from '../../core/jwt/jwt-auth.guard';
-import { Scopes } from '../scopes/scopes.decorator';
-import { GrantUserScopesService } from './service/grant-user-scopes.service';
-import { CreateUserService } from './service/create-user.service';
+import { JwtAuthGuard } from '../../../core/jwt/jwt-auth.guard';
+import { Scopes } from '../../domain/decorator/scopes.decorator';
+import { GrantUserScopesService } from '../../domain/service/users/grant-user-scopes.service';
+import { CreateUserService } from '../../domain/service/users/create-user.service';
 import { CreateUserDTO } from '../../domain/dto/create-user.dto';
 
 @Controller('users')

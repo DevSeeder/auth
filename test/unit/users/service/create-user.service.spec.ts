@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LocalAuthGuard } from '../../../../src/core/local/local-auth.guard';
-import { UsersMongoose } from '../../../../src/microservice/users/users.repository';
+import { UsersMongoose } from '../../../../src/microservice/adapter/repository/users.repository';
 import { mockAuthGuard } from '../../../mock/guard/guard.mock';
 import { mockUserMongoose } from '../../../mock/repository/repository.mock';
 import * as sinon from 'sinon';
 import { JwtService } from '@nestjs/jwt';
 import { mockJWTService } from '../../../mock/service/jwt-service.mock';
-import { CreateUserService } from '../../../../src/microservice/users/service/create-user.service';
-import { CreateUserDTO } from '../../../../src/domain/dto/create-user.dto';
+import { CreateUserService } from '../../../../src/microservice/domain/service/users/create-user.service';
+import { CreateUserDTO } from '../../../../src/microservice/domain/dto/create-user.dto';
 import { ValidateUserService } from '../../../../src/microservice/users/service/validate-user.service';
 import { mockValidateUserService } from '../../../mock/service/user-service.mock';
 import { expect } from 'chai';

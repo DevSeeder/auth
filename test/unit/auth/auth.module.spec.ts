@@ -7,16 +7,16 @@ import {
     mockUserMongoose
 } from '../../mock/repository/repository.mock';
 import { mockAuthService } from '../../mock/service/service.mock';
-import { AuthController } from '../../../src/microservice/auth/auth.controller';
-import { AuthService } from '../../../src/microservice/auth/auth.service';
+import { AuthController } from '../../../src/microservice/adapter/controller/auth.controller';
+import { AuthService } from '../../../src/microservice/domain/service/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { AuthModule } from '../../../src/microservice/auth/auth.module';
-import { User } from '../../../src/microservice/users/users.schema';
+import { AuthModule } from '../../../src/microservice/adapter/module/auth.module';
+import { User } from '../../../src/microservice/domain/schema/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
-import { Scope } from '../../../src/microservice/scopes/scopes.schema';
-import { UsersMongoose } from '../../../src/microservice/users/users.repository';
-import { ScopesMongoose } from '../../../src/microservice/scopes/scope.repository';
+import { Scope } from '../../../src/microservice/domain/schema/scopes.schema';
+import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
+import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scope.repository';
 import { JwtService } from '@nestjs/jwt';
 import { mockJWTService } from '../../mock/service/jwt-service.mock';
 import { ConfigService } from '@nestjs/config';

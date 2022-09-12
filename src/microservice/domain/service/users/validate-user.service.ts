@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { UsersMongoose } from '../users.repository';
-import { User } from '../users.schema';
 import * as bcrypt from 'bcrypt';
+import { UsersMongoose } from '../../../adapter/repository/users.repository';
+import { User } from '../../schema/users.schema';
 
 @Injectable()
 export class ValidateUserService {

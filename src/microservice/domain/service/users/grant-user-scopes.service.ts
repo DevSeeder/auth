@@ -4,11 +4,11 @@ import {
     Logger,
     NotFoundException
 } from '@nestjs/common';
-import { UsersMongoose } from '../users.repository';
-import { ScopesService } from '../../scopes/scopes.service';
-import { GrantScopeUserDTO } from '../../../domain/dto/grant-scope-user.dto';
 import { ValidateUserService } from './validate-user.service';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
+import { UsersMongoose } from '../../../adapter/repository/users.repository';
+import { ScopesService } from '../scopes.service';
+import { GrantScopeUserDTO } from '../../dto/grant-scope-user.dto';
 
 @Injectable()
 export class GrantUserScopesService {

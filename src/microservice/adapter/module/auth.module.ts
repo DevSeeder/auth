@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthController } from '../controller/auth.controller';
+import { AuthService } from '../../domain/service/auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from '../users/users.module';
-import { ScopesModule } from '../scopes/scopes.module';
+import { UsersModule } from './users.module';
+import { ScopesModule } from './scopes.module';
 import * as dotenv from 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from '@devseeder/nestjs-microservices-core';
