@@ -12,16 +12,17 @@ import { GrantScopeUserDTO } from '../../dto/grant-scope-user.dto';
 import { User } from '../../schema/users.schema';
 import { CustomErrorException } from '@devseeder/microservices-exceptions';
 import { ForbbidenScopeException } from '../../../../core/error-handling/forbbiden-scope.exception';
+import { UserService } from './user.service';
 
 @Injectable()
-export class GrantUserScopesService {
-    private readonly logger = new Logger(this.constructor.name);
-
+export class GrantUserScopesService extends UserService {
     constructor(
-        private readonly userRepository: UsersMongoose,
+        protected readonly userRepository: UsersMongoose,
         private readonly getUserService: ValidateUserService,
         private readonly scopeService: ScopesService
-    ) {}
+    ) {
+        super(userRepository);
+    }
 
     async grantScopeForUser(scopeDTO: GrantScopeUserDTO): Promise<any> {
         DTO.validateIsAnyEmptyKey(scopeDTO);
@@ -38,9 +39,6 @@ export class GrantUserScopesService {
             return userDB[0].scopes.indexOf(scope) == -1;
         });
 
-        console.log('scopes -->');
-        console.log(scopes);
-
         if (scopes.length === 0)
             throw new CustomErrorException(
                 'All the Scopes are already in the user.',
@@ -53,6 +51,7 @@ export class GrantUserScopesService {
 
         await this.userRepository.updateAddUserScopes(
             scopeDTO.username,
+            scopeDTO.projectKey,
             scopes
         );
     }
@@ -69,8 +68,6 @@ export class GrantUserScopesService {
 
         for (const item of scopes) {
             const admScope = this.getAdmScope(item);
-            console.log('admScope');
-            console.log(admScope);
             if (
                 userScopesDB.indexOf(item) === -1 &&
                 userScopesDB.indexOf(admScope) === -1
@@ -80,7 +77,7 @@ export class GrantUserScopesService {
     }
 
     private getAdmScope(scope: string): string {
-        let scopeParts = scope.split('/');
+        const scopeParts = scope.split('/');
         scopeParts.pop();
         scopeParts.push('ADM');
         return scopeParts.join('/');

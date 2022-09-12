@@ -18,10 +18,15 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
         return this.insertOne(user, 'User');
     }
 
-    async updateAddUserScopes(username: string, scopes: string[]) {
+    async updateAddUserScopes(
+        username: string,
+        projectKey: string,
+        scopes: string[]
+    ) {
         return this.model.updateOne(
             {
-                username
+                username,
+                projectKey: { $in: [projectKey, 'GLOBAL'] }
             },
             {
                 $push: {
@@ -51,5 +56,21 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
             throw new NotFoundException('User not found!');
 
         return response[0].scopes;
+    }
+
+    async updatePassword(
+        username: string,
+        projectKey: string,
+        password: string
+    ) {
+        return this.model.updateOne(
+            {
+                username,
+                projectKey: { $in: [projectKey, 'GLOBAL'] }
+            },
+            {
+                $set: { password }
+            }
+        );
     }
 }

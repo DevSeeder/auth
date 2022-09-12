@@ -1,19 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { Injectable } from '@nestjs/common';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import { User } from '../../schema/users.schema';
+import { UserService } from './user.service';
 
 @Injectable()
-export class ValidateUserService {
-    private readonly logger = new Logger(this.constructor.name);
-
-    constructor(private readonly userRepository: UsersMongoose) {}
-
-    async getUserByUsernameAndProject(username: string, projectKey: string) {
-        return this.userRepository.find<User>({
-            username,
-            projectKey: { $in: [projectKey, 'GLOBAL'] }
-        });
+export class ValidateUserService extends UserService {
+    constructor(protected readonly userRepository: UsersMongoose) {
+        super(userRepository);
     }
 
     async validateUserByCredentials(user: User, projectKey: string) {
@@ -24,10 +17,6 @@ export class ValidateUserService {
 
         if (userDB.length === 0) return false;
 
-        return this.validateUserPassword(user, userDB[0]);
-    }
-
-    private validateUserPassword(user: User, userDB: User) {
-        return bcrypt.compareSync(user.password, userDB.password);
+        return this.validateUserPassword(user.password, userDB[0].password);
     }
 }

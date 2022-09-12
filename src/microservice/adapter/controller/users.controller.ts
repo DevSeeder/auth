@@ -7,12 +7,15 @@ import { CreateUserService } from '../../domain/service/users/create-user.servic
 import { CreateUserDTO } from '../../domain/dto/create-user.dto';
 import { GetUser } from 'src/microservice/domain/decorator/get-user.decorator';
 import { Scopes } from '@devseeder/nestjs-microservices-core';
+import { UpdatePasswordDTO } from '../../domain/dto/update-password.dto';
+import { UpdatePasswordService } from '../../domain/service/users/update-password.service';
 
 @Controller('users')
 export class UsersController {
     constructor(
         private readonly userService: GrantUserScopesService,
-        private readonly createUserService: CreateUserService
+        private readonly createUserService: CreateUserService,
+        private readonly updatePasswordService: UpdatePasswordService
     ) {}
 
     @UseGuards(JwtAuthGuard)
@@ -27,5 +30,12 @@ export class UsersController {
     @Post('/grantscope')
     async grantScopeForUser(@Body() scopeDTO: GrantScopeUserDTO) {
         return this.userService.grantScopeForUser(scopeDTO);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Scopes(EnumAuthScopes.UPDATE_PASSWORD)
+    @Post('/update/password')
+    async updatePassword(@Body() passDTO: UpdatePasswordDTO) {
+        return this.updatePasswordService.updatePassword(passDTO);
     }
 }

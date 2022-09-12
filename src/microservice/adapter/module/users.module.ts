@@ -9,6 +9,7 @@ import { User, UserSchema } from '../../domain/schema/users.schema';
 import { CreateUserService } from '../../domain/service/users/create-user.service';
 import { GrantUserScopesService } from '../../../microservice/domain/service/users/grant-user-scopes.service';
 import { ValidateUserService } from '../../../microservice/domain/service/users/validate-user.service';
+import { UpdatePasswordService } from '../../../microservice/domain/service/users/update-password.service';
 
 @Module({
     imports: [
@@ -22,8 +23,14 @@ import { ValidateUserService } from '../../../microservice/domain/service/users/
         UsersMongoose,
         JwtService,
         CreateUserService,
-        ValidateUserService
+        ValidateUserService,
+        UpdatePasswordService
     ],
-    exports: [GrantUserScopesService, CreateUserService, ValidateUserService]
+    exports: [
+        GrantUserScopesService,
+        CreateUserService,
+        ValidateUserService,
+        UpdatePasswordService
+    ]
 })
 export class UsersModule {}

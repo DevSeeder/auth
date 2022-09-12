@@ -48,7 +48,10 @@ describe('UsersMongoose', () => {
         it('should call updateAddUserScopes correctly', async () => {
             const updateSpy = sinon.spy(sut, 'updateOne');
 
-            await sut.updateAddUserScopes('any_user', ['scope1', 'scope2']);
+            await sut.updateAddUserScopes('any_user', 'any_projectKey', [
+                'scope1',
+                'scope2'
+            ]);
 
             sinon.assert.calledOnceWithExactly(
                 updateSpy,

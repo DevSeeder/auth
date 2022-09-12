@@ -1,31 +1,25 @@
-import {
-    BadRequestException,
-    HttpStatus,
-    Injectable,
-    Logger
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
-import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
 import { ValidateUserService } from './validate-user.service';
 import { CreateUserDTO } from '../../dto/create-user.dto';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 import { GrantUserScopesService } from './grant-user-scopes.service';
-import { User } from '../../schema/users.schema';
-import { ForbbidenScopeException } from 'src/core/error-handling/forbbiden-scope.exception';
 import { EnumAuthScopes } from '../../enum/enum-auth-scopes.enum';
+import { UserService } from './user.service';
+import { UserAlreadyExistsException } from '../../../../core/error-handling/user-already-exists.exception';
 
 dotenv.config();
 
 @Injectable()
-export class CreateUserService {
-    private readonly logger = new Logger(this.constructor.name);
-
+export class CreateUserService extends UserService {
     constructor(
-        private readonly userRepository: UsersMongoose,
+        protected readonly userRepository: UsersMongoose,
         private readonly validateUserService: ValidateUserService,
         private readonly grantScopesService: GrantUserScopesService
-    ) {}
+    ) {
+        super(userRepository);
+    }
 
     async createUser(user: CreateUserDTO, actualUser: string) {
         const scopes = user.scopes;
@@ -68,14 +62,7 @@ export class CreateUserService {
             );
 
         if (users.length > 0) {
-            throw new BadRequestException(
-                `User ${user.username} already exists for this project`
-            );
+            throw new UserAlreadyExistsException(user.username);
         }
-    }
-
-    private generateUserHash(value: string) {
-        const salt = bcrypt.genSaltSync(Number(process.env.ROUND_SALT));
-        return bcrypt.hashSync(value, salt);
     }
 }
