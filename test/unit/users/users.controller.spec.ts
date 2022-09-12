@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LocalAuthGuard } from '../../../src/core/local/local-auth.guard';
-import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scope.repository';
+import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scopes.repository';
 import { ScopesService } from '../../../src/microservice/domain/service/scopes.service';
 import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
 import { GrantUserScopesService } from '../../../src/microservice/users/service/grant-user-scopes.service';

@@ -4,7 +4,7 @@ import {
     NotAcceptableException,
     NotFoundException
 } from '@nestjs/common';
-import { ScopesMongoose } from '../../adapter/repository/scope.repository';
+import { ScopesMongoose } from '../../adapter/repository/scopes.repository';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

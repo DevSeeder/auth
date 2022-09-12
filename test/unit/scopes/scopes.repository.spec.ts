@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import { User } from '../../../src/microservice/domain/schema/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
 import { Scope } from '../../../src/microservice/domain/schema/scopes.schema';
-import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scope.repository';
+import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scopes.repository';
 
 const mockUser = new User();
 mockUser.username = 'any_username';

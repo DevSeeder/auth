@@ -16,7 +16,7 @@ import { User } from '../../../src/microservice/domain/schema/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
 import { Scope } from '../../../src/microservice/domain/schema/scopes.schema';
 import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
-import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scope.repository';
+import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scopes.repository';
 import { JwtService } from '@nestjs/jwt';
 import { mockJWTService } from '../../mock/service/jwt-service.mock';
 import { ConfigService } from '@nestjs/config';

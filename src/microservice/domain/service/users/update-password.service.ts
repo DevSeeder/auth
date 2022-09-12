@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
     EnumInvalidPassErrorCode,
     InvalidPasswordException
-} from 'src/core/error-handling/invalid-update-password.exception';
+} from '../../../../core/error-handling/invalid-update-password.exception';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import { UpdatePasswordDTO } from '../../dto/update-password.dto';
 import { UserService } from './user.service';

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ScopesMongoose } from '../repository/scope.repository';
+import { ScopesMongoose } from '../repository/scopes.repository';
 import { Scope, ScopeSchema } from '../../domain/schema/scopes.schema';
 import { ScopesService } from '../../domain/service/scopes.service';
 

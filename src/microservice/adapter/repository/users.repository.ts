@@ -40,10 +40,6 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
         username: string,
         projectKey: string
     ): Promise<string[]> {
-        console.log({
-            username,
-            projectKey: { $in: [projectKey, 'GLOBAL'] }
-        });
         const response = await this.find<User>(
             {
                 username,
