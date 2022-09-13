@@ -10,11 +10,29 @@ export const mockUserMongoose = {
     },
     find: () => {
         return [];
+    },
+    updatePassword: () => {
+        return;
     }
 };
 
 export const mockMongoose = {
     find: () => {
         return [];
+    }
+};
+
+export const mockSecurityTokensMongoose = {
+    inactiveActualTokens: () => {
+        return;
+    },
+    checkConfirmationCode: () => {
+        return;
+    },
+    updateConfirmToken: () => {
+        return;
+    },
+    pushLogAttempt: () => {
+        return;
     }
 };
