@@ -1,3 +1,5 @@
+import { mockMongooseRepo } from './mongoose.mock';
+
 export const mockUserMongoose = {
     createUser: () => {
         return;
@@ -22,17 +24,21 @@ export const mockMongoose = {
     }
 };
 
-export const mockSecurityTokensMongoose = {
-    inactiveActualTokens: () => {
-        return;
-    },
-    checkConfirmationCode: () => {
-        return;
-    },
-    updateConfirmToken: () => {
-        return;
-    },
-    pushLogAttempt: () => {
-        return;
-    }
+export const mockSecurityTokensMongoose = () => {
+    const mock = {
+        inactiveActualTokens: () => {
+            return;
+        },
+        checkConfirmationCode: () => {
+            return;
+        },
+        updateConfirmToken: () => {
+            return;
+        },
+        pushLogAttempt: () => {
+            return;
+        }
+    };
+
+    return { ...mock, ...mockMongooseRepo };
 };

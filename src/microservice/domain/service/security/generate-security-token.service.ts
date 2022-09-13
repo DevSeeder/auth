@@ -1,11 +1,5 @@
-import { NotFoundException } from '@devseeder/microservices-exceptions';
 import { AbstractService } from '@devseeder/nestjs-microservices-commons';
-import { CustomResponse } from '@devseeder/nestjs-microservices-core/dist/interface/custom-response.interface';
 import { Injectable } from '@nestjs/common';
-import {
-    EnumInvalidSecurityCodeErrorCode,
-    InvalidSecurityCodeException
-} from 'src/core/error-handling/invalid-security-code.exception';
 import { DateHelper } from '../../../adapter/helper/date.helper';
 import { RandomHelper } from '../../../adapter/helper/random.helper';
 import { SecurityTokensMongoose } from '../../../adapter/repository/security-tokens.repository';

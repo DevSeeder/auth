@@ -83,6 +83,15 @@ export const mockMongooseModel = {
     )
 };
 
+export const mockMongooseRepo = {
+    insertOne: jest.fn(
+        () =>
+            new Promise(async (resolve) => {
+                resolve({});
+            })
+    )
+};
+
 export const mockMongooseConnection = () => {
     return {
         createConnection: jest.fn(() => {

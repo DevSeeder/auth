@@ -6,7 +6,7 @@ import { EnumTokenType } from '../../enum/enum-token-type.enum';
 import { GenerateSecurityTokenService } from './generate-security-token.service';
 import { ValidateUserService } from '../users/validate-user.service';
 import { MailService } from '../mail/mail.service';
-import { MailSendingException } from 'src/core/error-handling/mail-sending.exception';
+import { MailSendingException } from '../../../../core/error-handling/mail-sending.exception';
 import { User } from '../../schema/users.schema';
 import { ConfirmSecurityTokenService } from './confirm-security-token.service';
 import { ValidationTokenService } from './validation-token.service';

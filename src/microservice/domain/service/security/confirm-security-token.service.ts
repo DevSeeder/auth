@@ -4,7 +4,7 @@ import {
 } from '@devseeder/nestjs-microservices-commons';
 import { CustomResponse } from '@devseeder/nestjs-microservices-core/dist/interface/custom-response.interface';
 import { Injectable } from '@nestjs/common';
-import { RandomHelper } from 'src/microservice/adapter/helper/random.helper';
+import { RandomHelper } from '../../../adapter/helper/random.helper';
 import {
     EnumInvalidSecurityCodeErrorCode,
     InvalidSecurityCodeException
