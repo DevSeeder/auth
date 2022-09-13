@@ -1,26 +1,26 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { LocalAuthGuard } from '../../../src/core/local/local-auth.guard';
-import { mockAuthGuard } from '../../mock/guard/guard.mock';
-import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
+import { JwtAuthGuard } from './../../../../../src/core/jwt/jwt-auth.guard';
+import { Scope } from './../../../../../src/microservice/domain/schema/scopes.schema';
+import { User } from './../../../../../src/microservice/domain/schema/users.schema';
 import {
     mockMongoose,
     mockUserMongoose
-} from '../../mock/repository/repository.mock';
-import { mockAuthService } from '../../mock/service/service.mock';
-import { AuthController } from '../../../src/microservice/adapter/controller/auth.controller';
-import { AuthService } from '../../../src/microservice/domain/service/auth.service';
+} from './../../../../mock/repository/repository.mock';
+import { ScopesMongoose } from './../../../../../src/microservice/adapter/repository/scopes.repository';
+import { AuthModule } from './../../../../../src/microservice/adapter/module/auth.module';
+import { AuthService } from './../../../../../src/microservice/domain/service/auth.service';
+import { mockAuthService } from './../../../../mock/service/service.mock';
+import { LocalAuthGuard } from './../../../../../src/core/local/local-auth.guard';
+import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { AuthModule } from '../../../src/microservice/adapter/module/auth.module';
-import { User } from '../../../src/microservice/domain/schema/users.schema';
 import { getModelToken } from '@nestjs/mongoose';
-import { Scope } from '../../../src/microservice/domain/schema/scopes.schema';
-import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
-import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scopes.repository';
-import { JwtService } from '@nestjs/jwt';
-import { mockJWTService } from '../../mock/service/jwt-service.mock';
 import { ConfigService } from '@nestjs/config';
-import { JwtAuthGuard } from '../../../src/core/jwt/jwt-auth.guard';
+import { AuthController } from '../../../../../src/microservice/adapter/controller/auth.controller';
+import { JwtService } from '@nestjs/jwt';
+import { mockAuthGuard } from '../../../../mock/guard/guard.mock';
+import { mockJWTService } from '../../../../mock/service/jwt-service.mock';
+import { mockMongooseModel } from '../../../../mock/repository/mongoose.mock';
+import { UsersMongoose } from '../../../../../src/microservice/adapter/repository/users.repository';
 
 describe('AuthModule', () => {
     let sut: AuthController;

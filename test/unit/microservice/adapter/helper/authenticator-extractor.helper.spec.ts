@@ -1,4 +1,4 @@
-import { AuthenticatorExtractorHelper } from '../../../src/microservice/adapter/helper/authenticator-extractor.helper';
+import { AuthenticatorExtractorHelper } from '../../../../../src/microservice/adapter/helper/authenticator-extractor.helper';
 
 describe('AuthenticatorExtractorHelper', () => {
     describe('extractBasicAuth', () => {

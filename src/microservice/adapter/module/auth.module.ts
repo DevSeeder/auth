@@ -8,6 +8,7 @@ import { ScopesModule } from './scopes.module';
 import * as dotenv from 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from '@devseeder/nestjs-microservices-core';
+import { ConfigurationModule } from './config.module';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ dotenv.config();
     imports: [
         UsersModule,
         ScopesModule,
+        ConfigurationModule,
         PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.registerAsync({
             imports: [ConfigModule],

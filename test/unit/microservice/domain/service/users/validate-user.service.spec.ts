@@ -1,15 +1,16 @@
+import { ValidateUserService } from './../../../../../../src/microservice/domain/service/users/validate-user.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalAuthGuard } from '../../../../src/core/local/local-auth.guard';
-import { UsersMongoose } from '../../../../src/microservice/adapter/repository/users.repository';
-import { GrantUserScopesService } from '../../../../src/microservice/users/service/grant-user-scopes.service';
-import { mockAuthGuard } from '../../../mock/guard/guard.mock';
-import { mockUserMongoose } from '../../../mock/repository/repository.mock';
+import { LocalAuthGuard } from '../../../../../../src/core/local/local-auth.guard';
+import { UsersMongoose } from '../../../../../../src/microservice/adapter/repository/users.repository';
+import { mockAuthGuard } from '../../../../../mock/guard/guard.mock';
+import { mockUserMongoose } from '../../../../../mock/repository/repository.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../../src/microservice/domain/schema/users.schema';
+import { User } from '../../../../../../src/microservice/domain/schema/users.schema';
 import { JwtService } from '@nestjs/jwt';
-import { mockJWTService } from '../../../mock/service/jwt-service.mock';
-import { ValidateUserService } from '../../../../src/microservice/users/service/validate-user.service';
+import { mockJWTService } from '../../../../../mock/service/jwt-service.mock';
+import { mockConfigService } from '../../../../../mock/service/config-service.mock';
+import { ConfigService } from '@nestjs/config';
 
 const mockUser = new User();
 mockUser.username = 'any_username';
@@ -30,6 +31,10 @@ describe('ValidateUserService', () => {
                 {
                     provide: JwtService,
                     useValue: mockJWTService
+                },
+                {
+                    provide: ConfigService,
+                    useValue: mockConfigService
                 }
             ]
         })
@@ -43,8 +48,8 @@ describe('ValidateUserService', () => {
     describe('validateUserByCredentials', () => {
         it('should call validateUserByCredentials correctly', async () => {
             const mockUserDB = new User();
+            mockUserDB.username = 'any_username';
             mockUserDB.password = 'any_password';
-            mockUserDB.projectKey = 'any_projectKey';
 
             const getUserStub = sinon
                 .stub(mockUserMongoose, 'find')
@@ -56,8 +61,8 @@ describe('ValidateUserService', () => {
 
             sinon.assert.calledOnceWithExactly(
                 validateStub,
-                mockUser,
-                mockUserDB
+                mockUser.password,
+                mockUserDB.password
             );
 
             getUserStub.restore();

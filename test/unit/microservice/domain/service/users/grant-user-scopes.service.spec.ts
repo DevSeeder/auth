@@ -1,25 +1,28 @@
+import { GrantScopeUserDTO } from './../../../../../../src/microservice/domain/dto/grant-scope-user.dto';
+import { LocalAuthGuard } from './../../../../../../src/core/local/local-auth.guard';
+import { mockMongooseModel } from './../../../../../mock/repository/mongoose.mock';
+import { UsersMongoose } from './../../../../../../src/microservice/adapter/repository/users.repository';
+import { ValidateUserService } from './../../../../../../src/microservice/domain/service/users/validate-user.service';
+import { ScopesService } from './../../../../../../src/microservice/domain/service/scopes.service';
+import { GrantUserScopesService } from './../../../../../../src/microservice/domain/service/users/grant-user-scopes.service';
+import { User } from './../../../../../../src/microservice/domain/schema/users.schema';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalAuthGuard } from '../../../../src/core/local/local-auth.guard';
-import { ScopesMongoose } from '../../../../src/microservice/adapter/repository/scopes.repository';
-import { ScopesService } from '../../../../src/microservice/domain/service/scopes.service';
-import { UsersMongoose } from '../../../../src/microservice/adapter/repository/users.repository';
-import { GrantUserScopesService } from '../../../../src/microservice/users/service/grant-user-scopes.service';
-import { mockAuthGuard } from '../../../mock/guard/guard.mock';
-import { mockMongooseModel } from '../../../mock/repository/mongoose.mock';
-import { mockUserMongoose } from '../../../mock/repository/repository.mock';
-import { mockScopesService } from '../../../mock/service/service.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { User } from '../../../../src/microservice/domain/schema/users.schema';
-import { GrantScopeUserDTO } from '../../../../src/microservice/domain/dto/grant-scope-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { mockJWTService } from '../../../mock/service/jwt-service.mock';
-import { ValidateUserService } from '../../../../src/microservice/users/service/validate-user.service';
-import { mockValidateUserService } from '../../../mock/service/user-service.mock';
+import { mockScopesService } from './../../../../../mock/service/service.mock';
+import { mockValidateUserService } from './../../../../../mock/service/user-service.mock';
+import { mockUserMongoose } from './../../../../../mock/repository/repository.mock';
+import { ScopesMongoose } from './../../../../../../src/microservice/adapter/repository/scopes.repository';
+import { mockJWTService } from './../../../../../mock/service/jwt-service.mock';
+import { mockAuthGuard } from './../../../../../mock/guard/guard.mock';
+import { ConfigService } from '@nestjs/config';
+import { mockConfigService } from '../../../../../mock/service/config-service.mock';
 
 const mockUser = new User();
 mockUser.username = 'any_username';
 mockUser.password = 'any_password';
+mockUser.projectKey = 'any_projectKey';
 
 describe('GrantUserScopesService', () => {
     let sut: GrantUserScopesService;
@@ -48,6 +51,10 @@ describe('GrantUserScopesService', () => {
                 {
                     provide: JwtService,
                     useValue: mockJWTService
+                },
+                {
+                    provide: ConfigService,
+                    useValue: mockConfigService
                 }
             ]
         })
@@ -62,7 +69,10 @@ describe('GrantUserScopesService', () => {
         it('should call grantscope correctly', async () => {
             const mockDTO = new GrantScopeUserDTO();
             mockDTO.username = 'any_username';
+            mockDTO.projectKey = 'any_projectKey';
             mockDTO.scopes = ['scope1', 'scope2'];
+
+            mockUser.scopes = [];
 
             const getUserStub = sinon
                 .stub(mockValidateUserService, 'getUserByUsernameAndProject')
@@ -80,10 +90,12 @@ describe('GrantUserScopesService', () => {
 
             await sut.grantScopeForUser(mockDTO);
 
-            sinon.assert.calledOnceWithExactly(updateSpy, 'any_username', [
-                'scope1',
-                'scope2'
-            ]);
+            sinon.assert.calledOnceWithExactly(
+                updateSpy,
+                'any_username',
+                'any_projectKey',
+                ['scope1', 'scope2']
+            );
 
             updateSpy.restore();
             validateScopeStub.restore();
@@ -123,9 +135,16 @@ describe('GrantUserScopesService', () => {
                 .stub(mockUserMongoose, 'getScopesByUser')
                 .returns(['scope1', 'scope2']);
 
-            await sut.validateScopesForUser('any_user', ['scope1', 'scope2']);
+            await sut.validateScopesForUser('any_user', 'any_projectKey', [
+                'scope1',
+                'scope2'
+            ]);
 
-            sinon.assert.calledOnceWithExactly(getUserStub, 'any_user');
+            sinon.assert.calledOnceWithExactly(
+                getUserStub,
+                'any_user',
+                'any_projectKey'
+            );
 
             getUserStub.restore();
         });
@@ -136,7 +155,7 @@ describe('GrantUserScopesService', () => {
                 .returns(['scope2']);
 
             try {
-                await sut.validateScopesForUser('any_user', [
+                await sut.validateScopesForUser('any_user', 'any_projectKey', [
                     'scope1',
                     'scope2'
                 ]);

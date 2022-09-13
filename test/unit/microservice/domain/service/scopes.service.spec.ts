@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scopes.repository';
-import { ScopesService } from '../../../src/microservice/domain/service/scopes.service';
-import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
-import { GrantUserScopesService } from '../../../src/microservice/users/service/grant-user-scopes.service';
-import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
-import { mockUserMongoose } from '../../mock/repository/repository.mock';
+import { ScopesMongoose } from '../../../../../src/microservice/adapter/repository/scopes.repository';
+import { ScopesService } from '../../../../../src/microservice/domain/service/scopes.service';
+import { UsersMongoose } from '../../../../../src/microservice/adapter/repository/users.repository';
+import { mockMongooseModel } from '../../../../mock/repository/mongoose.mock';
+import { mockUserMongoose } from '../../../../mock/repository/repository.mock';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { mockJWTService } from '../../mock/service/jwt-service.mock';
+import { mockJWTService } from '../../../../mock/service/jwt-service.mock';
 import { JwtService } from '@nestjs/jwt';
-import { Scope } from '../../../src/microservice/domain/schema/scopes.schema';
-import { mockGrantUserScopesService } from '../../mock/service/user-service.mock';
+import { Scope } from '../../../../../src/microservice/domain/schema/scopes.schema';
+import { mockGrantUserScopesService } from '../../../../mock/service/user-service.mock';
+import { GrantUserScopesService } from '../../../../../src/microservice/domain/service/users/grant-user-scopes.service';
 
 describe('ScopesService', () => {
     let sut: ScopesService;

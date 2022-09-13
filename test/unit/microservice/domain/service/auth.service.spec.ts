@@ -1,17 +1,17 @@
+import { mockMongooseModel } from './../../../../mock/repository/mongoose.mock';
+import { UsersMongoose } from './../../../../../src/microservice/adapter/repository/users.repository';
+import { mockUserMongoose } from './../../../../mock/repository/repository.mock';
+import { mockScopesService } from './../../../../mock/service/service.mock';
+import { ScopesService } from './../../../../../src/microservice/domain/service/scopes.service';
+import { GrantUserScopesService } from './../../../../../src/microservice/domain/service/users/grant-user-scopes.service';
+import { AuthService } from './../../../../../src/microservice/domain/service/auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ScopesMongoose } from '../../../src/microservice/adapter/repository/scopes.repository';
-import { ScopesService } from '../../../src/microservice/domain/service/scopes.service';
-import { UsersMongoose } from '../../../src/microservice/adapter/repository/users.repository';
-import { GrantUserScopesService } from '../../../src/microservice/users/service/grant-user-scopes.service';
-import { mockMongooseModel } from '../../mock/repository/mongoose.mock';
-import { mockUserMongoose } from '../../mock/repository/repository.mock';
-import { mockScopesService } from '../../mock/service/service.mock';
-import { AuthService } from '../../../src/microservice/domain/service/auth.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { mockJWTService } from '../../mock/service/jwt-service.mock';
 import { JwtService } from '@nestjs/jwt';
-import { mockGrantUserScopesService } from '../../mock/service/user-service.mock';
+import { mockGrantUserScopesService } from './../../../../mock/service/user-service.mock';
+import { mockJWTService } from './../../../../mock/service/jwt-service.mock';
+import { ScopesMongoose } from './../../../../../src/microservice/adapter/repository/scopes.repository';
 
 describe('AuthService', () => {
     let sut: AuthService;
@@ -57,10 +57,11 @@ describe('AuthService', () => {
                 .stub(mockJWTService, 'sign')
                 .returns('any_token');
 
-            const actual = await sut.loginWithCredentials('any', [
-                'scope1',
-                'scope2'
-            ]);
+            const actual = await sut.loginWithCredentials(
+                'any',
+                'any_projectKey',
+                ['scope1', 'scope2']
+            );
             expect(JSON.stringify(actual)).to.be.equal(
                 JSON.stringify(mockResponseToken)
             );
