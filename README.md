@@ -13,7 +13,6 @@
 <ul>
   <li>NestJS</li>
   <li>NodeJS</li>
-  <li>Puppeteer</li>
   <li>JWT Auth</li>
 </ul>
 
@@ -80,8 +79,6 @@ After run the server, make a get in browser, postman or similar
 [url-prod]/auth/login
 ## Create User
 [url-prod]/users/create
-## Grant Scope
-[url-prod]/users/grantscope
 ```
 
 <!-- [Swagger](https://app.swaggerhub.com/apis/dev-seeder/Places/) -->
