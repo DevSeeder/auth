@@ -89,7 +89,20 @@ export const mockMongooseRepo = {
             new Promise(async (resolve) => {
                 resolve({});
             })
-    )
+    ),
+    findById: () => {
+        return {
+            select: jest.fn(() => {
+                return {
+                    lean: jest.fn(() => {
+                        return {
+                            exec: jest.fn(() => null)
+                        };
+                    })
+                };
+            })
+        };
+    }
 };
 
 export const mockMongooseConnection = () => {

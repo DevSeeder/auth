@@ -76,6 +76,24 @@ describe('CreateUserService', () => {
             userStub.restore();
         });
 
+        it('should call createUser correctly with empty scopes', async () => {
+            const createSpy = sinon.spy(mockUserMongoose, 'createUser');
+
+            const userStub = sinon
+                .stub(mockValidateUserService, 'getUserByUsernameAndProject')
+                .returns([]);
+
+            const mockDTO = mockUser;
+            mockDTO.scopes = ['scope1', 'scope2'];
+
+            await sut.createUser(mockDTO, 'any_actualUser');
+
+            sinon.assert.calledOnce(createSpy);
+
+            createSpy.restore();
+            userStub.restore();
+        });
+
         it('should call createUser and thows an error for user exists', async () => {
             const createSpy = sinon.spy(mockUserMongoose, 'createUser');
 

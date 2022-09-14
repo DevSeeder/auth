@@ -18,7 +18,7 @@ export abstract class UserService extends AbstractService {
         super();
     }
 
-    protected generateUserHash(value: string): string {
+    generateUserHash(value: string): string {
         const salt = bcrypt.genSaltSync(
             Number(this.configService.get('auth.password.round-salt'))
         );

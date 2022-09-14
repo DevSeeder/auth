@@ -28,13 +28,12 @@ describe('MailService', () => {
 
             sut.sendEmail('any_email', 'any_subject', 'any_template', {});
 
-            sinon.assert.calledOnceWithExactly(
-                mailSpy,
-                'any_email',
-                'any_subject',
-                'any_template',
-                {}
-            );
+            sinon.assert.calledOnceWithExactly(mailSpy, {
+                to: 'any_email',
+                subject: 'any_subject',
+                template: 'any_template',
+                context: {}
+            });
 
             mailSpy.restore();
         });

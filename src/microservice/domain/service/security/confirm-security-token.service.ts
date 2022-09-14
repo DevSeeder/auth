@@ -52,6 +52,7 @@ export class ConfirmSecurityTokenService extends AbstractService {
         } catch (err) {
             await this.logAttempts(err.refId, code, false, err.message);
             this.logger.error(err.message);
+            console.log(err);
             return {
                 success: false,
                 response: err

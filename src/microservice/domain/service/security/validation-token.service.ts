@@ -27,7 +27,7 @@ export class ValidationTokenService extends AbstractService {
             );
         }
 
-        if (!securityToken.validated) {
+        if (securityToken.validated) {
             throw new InvalidSecurityCodeException(
                 'Token Already Validated',
                 null,

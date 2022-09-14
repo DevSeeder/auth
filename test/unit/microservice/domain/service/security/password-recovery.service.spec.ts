@@ -1,3 +1,4 @@
+import { MailSendingException } from './../../../../../../src/core/error-handling/mail-sending.exception';
 import { UpdatePasswordCodeDTO } from '../../../../../../src/microservice/domain/dto/update-password.dto';
 import { EnumTokenType } from '../../../../../../src/microservice/domain/enum/enum-token-type.enum';
 
@@ -73,6 +74,30 @@ describe('PasswordRecoveryService', () => {
                 success: true,
                 response: 'Recovery Code sent to email!'
             });
+            userStub.restore();
+        });
+
+        it('should call generatePasswordRecoveryToken and throws an email error', async () => {
+            const userStub = sinon
+                .stub(mockValidateUserService, 'getAndValidateUser')
+                .returns(mockUser());
+
+            const sendEmailThrows = sinon
+                .stub(mockMailService, 'sendEmail')
+                .throws(new MailSendingException('any error email'));
+
+            try {
+                await sut.generatePasswordRecoveryToken(
+                    'any_username',
+                    'any_projectKey'
+                );
+            } catch (err) {
+                expect(err.message).to.be.deep.equal(
+                    'Error sending message: Error sending message: any error email'
+                );
+            }
+
+            sendEmailThrows.restore();
             userStub.restore();
         });
     });

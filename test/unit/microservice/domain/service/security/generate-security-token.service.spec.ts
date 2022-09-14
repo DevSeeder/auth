@@ -50,5 +50,21 @@ describe('GenerateSecurityTokenService', () => {
 
             insertSpy.restore();
         });
+
+        it('should call generateSecurityToken call insertOne with HASH', async () => {
+            const insertSpy = sinon.spy(mockRepo, 'insertOne');
+
+            await sut.generateSecurityToken(
+                EnumTokenType.PASSWORD_RECOVERY,
+                'any',
+                EnumCodeType.HASH,
+                6,
+                '3h'
+            );
+
+            sinon.assert.calledOnce(insertSpy);
+
+            insertSpy.restore();
+        });
     });
 });
