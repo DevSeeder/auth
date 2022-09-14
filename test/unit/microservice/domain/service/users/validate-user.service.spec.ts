@@ -83,4 +83,20 @@ describe('ValidateUserService', () => {
             getUserStub.restore();
         });
     });
+
+    describe('getAndValidateUser', () => {
+        it('should call getAndValidateUser adn thorws an error for user not found', async () => {
+            const getUserStub = sinon
+                .stub(mockUserMongoose, 'find')
+                .returns([]);
+
+            try {
+                await sut.getAndValidateUser('any_username', 'any_projectKey');
+            } catch (err) {
+                expect(err.message).to.be.equal('User not found');
+            }
+
+            getUserStub.restore();
+        });
+    });
 });

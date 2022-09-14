@@ -91,4 +91,29 @@ describe('UsersMongoose', () => {
             getUserStub.restore();
         });
     });
+
+    describe('updatePassword', () => {
+        it('should call updatePassword and call updateOne correctly', async () => {
+            const updateSpy = sinon.spy(mockMongooseModel, 'updateOne');
+
+            await sut.updatePassword(
+                'any_username',
+                'any_projectKey',
+                'any_password'
+            );
+
+            sinon.assert.calledOnceWithExactly(
+                updateSpy,
+                {
+                    username: 'any_username',
+                    projectKey: { $in: ['any_projectKey', 'GLOBAL'] }
+                },
+                {
+                    $set: { password: 'any_password' }
+                }
+            );
+
+            updateSpy.restore();
+        });
+    });
 });

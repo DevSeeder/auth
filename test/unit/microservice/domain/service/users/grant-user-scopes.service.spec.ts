@@ -127,6 +127,36 @@ describe('GrantUserScopesService', () => {
             updateSpy.restore();
             getUserStub.restore();
         });
+
+        it('should call grantscope adn thorws an error for user not found', async () => {
+            const mockDTO = new GrantScopeUserDTO();
+            mockDTO.username = 'any_username';
+            mockDTO.scopes = ['scope1', 'scope2'];
+            const mockUserActual = mockUser;
+            mockUserActual.scopes = ['scope1', 'scope2'];
+
+            const getUserStub = sinon
+                .stub(mockValidateUserService, 'getUserByUsernameAndProject')
+                .returns([mockUserActual]);
+
+            const updateSpy = sinon.spy(
+                mockUserMongoose,
+                'updateAddUserScopes'
+            );
+
+            try {
+                await sut.grantScopeForUser(mockDTO);
+            } catch (err) {
+                expect(err.message).to.be.equal(
+                    'All the Scopes are already in the user.'
+                );
+            }
+
+            sinon.assert.notCalled(updateSpy);
+
+            updateSpy.restore();
+            getUserStub.restore();
+        });
     });
 
     describe('validateScopesForUser', () => {
