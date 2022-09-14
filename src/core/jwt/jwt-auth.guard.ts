@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
+import { EnumAuthScopes } from '../../microservice/domain/enum/enum-auth-scopes.enum';
 import * as dotenv from 'dotenv';
 import { ConfigService } from '@nestjs/config';
 import { CustomJwtAuthGuard } from '@devseeder/nestjs-microservices-core';

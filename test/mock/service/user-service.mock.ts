@@ -10,6 +10,9 @@ export const mockValidateUserService = {
     },
     validateUserByCredentials: () => {
         return;
+    },
+    getAndValidateUser: () => {
+        return [];
     }
 };
 
@@ -18,6 +21,18 @@ export const mockGrantUserScopesService = {
         return;
     },
     validateScopesForUser: () => {
+        return;
+    }
+};
+
+export const mockUpdatePasswordService = {
+    updatePassword: () => {
+        return;
+    },
+    validatePassword: () => {
+        return;
+    },
+    updateDBPassword: () => {
         return;
     }
 };

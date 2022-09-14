@@ -74,6 +74,34 @@ export const mockMongooseModel = {
     ),
     findByIdAndUpdate: () => {
         return { exec: jest.fn(() => null) };
+    },
+    updateOne: jest.fn(
+        () =>
+            new Promise(async (resolve) => {
+                resolve({});
+            })
+    )
+};
+
+export const mockMongooseRepo = {
+    insertOne: jest.fn(
+        () =>
+            new Promise(async (resolve) => {
+                resolve({});
+            })
+    ),
+    findById: () => {
+        return {
+            select: jest.fn(() => {
+                return {
+                    lean: jest.fn(() => {
+                        return {
+                            exec: jest.fn(() => null)
+                        };
+                    })
+                };
+            })
+        };
     }
 };
 
