@@ -75,7 +75,7 @@ export class PasswordRecoveryService extends AbstractService {
         this.logger.log('Sending email...');
         try {
             await this.mailService.sendEmail(
-                'maicksantos05@hotmail.com',
+                user.username,
                 'Password Recovery',
                 './confirmation',
                 {
