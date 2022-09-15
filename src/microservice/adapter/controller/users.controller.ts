@@ -1,4 +1,13 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { ValidateUserService } from './../../domain/service/users/validate-user.service';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Query,
+    UseGuards
+} from '@nestjs/common';
 import { GrantScopeUserDTO } from '../../domain/dto/grant-scope-user.dto';
 import { EnumAuthScopes } from '../../domain/enum/enum-auth-scopes.enum';
 import { JwtAuthGuard } from '../../../core/jwt/jwt-auth.guard';
@@ -12,6 +21,7 @@ import { Scopes } from '@devseeder/nestjs-microservices-core';
 export class UsersController {
     constructor(
         private readonly userService: GrantUserScopesService,
+        private readonly getUserService: ValidateUserService,
         private readonly createUserService: CreateUserService
     ) {}
 
@@ -27,5 +37,22 @@ export class UsersController {
     @Post('/grantscope')
     async grantScopeForUser(@Body() scopeDTO: GrantScopeUserDTO) {
         return this.userService.grantScopeForUser(scopeDTO);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Scopes(EnumAuthScopes.GET_USER)
+    @Get('/search?')
+    async searchUser(
+        @Query('name') name: string,
+        @Query('projectKey') projectKey: string
+    ) {
+        return this.getUserService.searchUser(name, projectKey);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Scopes(EnumAuthScopes.GET_USER)
+    @Get('/details/:id')
+    async getUser(@Param('id') id: string) {
+        return this.getUserService.getById(id);
     }
 }

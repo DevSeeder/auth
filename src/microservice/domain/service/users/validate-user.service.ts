@@ -27,4 +27,8 @@ export class ValidateUserService extends UserService {
 
         return this.validateUserPassword(user.password, userDB[0].password);
     }
+
+    async searchUser(name: string, projectKey: string) {
+        return this.userRepository.searchUser(name, projectKey);
+    }
 }

@@ -69,4 +69,11 @@ export abstract class UserService extends AbstractService {
             }
         );
     }
+
+    async getById(id: string): Promise<User> {
+        const res = await this.userRepository.findById(id);
+        if (!res) throw new NotFoundException('User');
+
+        return res;
+    }
 }
