@@ -8,6 +8,9 @@ export class Scope {
     @Prop({ required: true, unique: true })
     scopeID: string;
 
+    @Prop({ required: false, unique: false })
+    description: string;
+
     @Prop({ required: true, unique: true })
     projectKey: string;
 

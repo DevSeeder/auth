@@ -1,3 +1,4 @@
+import { ProjectService } from './../project.service';
 import {
     AbstractService,
     MongooseDocument
@@ -13,7 +14,8 @@ import { ConfigService } from '@nestjs/config';
 export abstract class UserService extends AbstractService {
     constructor(
         protected readonly userRepository: UsersMongoose,
-        protected configService: ConfigService
+        protected configService: ConfigService,
+        protected readonly projectService: ProjectService
     ) {
         super();
     }
@@ -36,6 +38,8 @@ export abstract class UserService extends AbstractService {
         username: string,
         projectKey: string
     ): Promise<User & MongooseDocument> {
+        await this.projectService.validateProjectByKey(projectKey);
+
         const user = await this.getUserByUsernameAndProject(
             username,
             projectKey

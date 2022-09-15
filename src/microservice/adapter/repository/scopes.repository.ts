@@ -15,4 +15,25 @@ export class ScopesMongoose extends AuthMongooseRepository<
     ) {
         super(model);
     }
+
+    async searchScope(
+        id: string,
+        projectKey = '',
+        resourceKey = ''
+    ): Promise<Array<Scope>> {
+        const regexName = new RegExp(id, 'i');
+
+        const searchParams = {};
+
+        if (id.length > 0) searchParams['scopeID'] = { $regex: regexName };
+
+        if (projectKey.length > 0) searchParams['projectKey'] = projectKey;
+
+        if (resourceKey.length > 0)
+            searchParams['resourceKey'] = {
+                $in: ['*', resourceKey]
+            };
+
+        return this.find<Scope[]>(searchParams, {}, { scopeID: 1 });
+    }
 }

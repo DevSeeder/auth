@@ -1,3 +1,4 @@
+import { ProjectService } from './../project.service';
 import { Injectable } from '@nestjs/common';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import * as dotenv from 'dotenv';
@@ -18,9 +19,10 @@ export class CreateUserService extends UserService {
         protected readonly userRepository: UsersMongoose,
         private readonly validateUserService: ValidateUserService,
         private readonly grantScopesService: GrantUserScopesService,
-        protected configService: ConfigService
+        protected configService: ConfigService,
+        protected readonly projectService: ProjectService
     ) {
-        super(userRepository, configService);
+        super(userRepository, configService, projectService);
     }
 
     async createUser(user: CreateUserDTO, actualUser: string) {
@@ -56,6 +58,8 @@ export class CreateUserService extends UserService {
 
     async validateUser(user: CreateUserDTO) {
         DTO.validateIsAnyEmptyKey(user);
+
+        await this.projectService.validateProjectByKey(user.projectKey);
 
         const users =
             await this.validateUserService.getUserByUsernameAndProject(
