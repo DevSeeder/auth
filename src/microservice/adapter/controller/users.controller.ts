@@ -1,5 +1,4 @@
 import { UpdateUserDTO } from './../../domain/dto/update-user.dto';
-import { CustomResponse } from '@devseeder/nestjs-microservices-core/dist/interface/custom-response.interface';
 import { ValidateUserService } from './../../domain/service/users/validate-user.service';
 import {
     Body,

@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import { UpdateUserDTO } from '../../dto/update-user.dto';
-import { User } from '../../schema/users.schema';
 import { ProjectService } from '../project.service';
 import { UserService } from './user.service';
 

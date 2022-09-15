@@ -1,9 +1,4 @@
-import {
-    HttpStatus,
-    Injectable,
-    Logger,
-    NotFoundException
-} from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { ValidateUserService } from './validate-user.service';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
