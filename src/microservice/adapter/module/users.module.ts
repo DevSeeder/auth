@@ -11,6 +11,7 @@ import { GrantUserScopesService } from '../../../microservice/domain/service/use
 import { ValidateUserService } from '../../../microservice/domain/service/users/validate-user.service';
 import { UpdatePasswordService } from '../../../microservice/domain/service/users/update-password.service';
 import { ProjectsModule } from './projects.module';
+import { UpdateUserService } from '../../../microservice/domain/service/users/update-user.service';
 
 @Module({
     imports: [
@@ -26,13 +27,15 @@ import { ProjectsModule } from './projects.module';
         JwtService,
         CreateUserService,
         ValidateUserService,
-        UpdatePasswordService
+        UpdatePasswordService,
+        UpdateUserService
     ],
     exports: [
         GrantUserScopesService,
         CreateUserService,
         ValidateUserService,
-        UpdatePasswordService
+        UpdatePasswordService,
+        UpdateUserService
     ]
 })
 export class UsersModule {}

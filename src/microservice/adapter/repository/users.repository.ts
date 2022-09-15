@@ -1,3 +1,4 @@
+import { UpdateUserDTO } from './../../domain/dto/update-user.dto';
 import { GLOBAL_PROJECT_KEY } from './../../domain/constants/project.const';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -71,10 +72,22 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
         );
     }
 
+    async updateInfo(id: string, user: Partial<UpdateUserDTO>) {
+        await this.model.findByIdAndUpdate(id, {
+            $set: user
+        });
+    }
+
+    async updateActive(id: string, active: boolean) {
+        await this.model.findByIdAndUpdate(id, {
+            $set: { active }
+        });
+    }
+
     async searchUser(name = '', projectKey = ''): Promise<Array<User>> {
         const regexName = new RegExp(name, 'i');
 
-        const searchParams = {};
+        const searchParams = { active: true };
 
         if (name.length > 0)
             searchParams['$or'] = [

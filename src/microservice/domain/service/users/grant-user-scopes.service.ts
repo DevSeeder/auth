@@ -33,13 +33,10 @@ export class GrantUserScopesService extends UserService {
 
         await this.projectService.validateProjectByKey(scopeDTO.projectKey);
 
-        const userDB: User[] =
-            await this.getUserService.getUserByUsernameAndProject(
-                scopeDTO.username,
-                scopeDTO.projectKey
-            );
-
-        if (userDB.length === 0) throw new NotFoundException('User not found!');
+        const userDB: User[] = await this.getAndValidateUser(
+            scopeDTO.username,
+            scopeDTO.projectKey
+        );
 
         const scopes = scopeDTO.scopes.filter((scope) => {
             return userDB[0].scopes.indexOf(scope) == -1;
