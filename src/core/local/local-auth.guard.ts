@@ -34,11 +34,10 @@ export class LocalAuthGuard extends AbstractGuard implements CanActivate {
                 request.headers.projectkey
             )
         ) {
-            request.user =
-                await this.validateUserService.getUserByUsernameAndProject(
-                    userAuth.username,
-                    request.headers.projectkey
-                );
+            request.user = await this.validateUserService.getAndValidateUser(
+                userAuth.username,
+                request.headers.projectkey
+            );
             return true;
         }
 

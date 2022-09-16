@@ -1,3 +1,4 @@
+import { ProjectService } from './../../../../../../src/microservice/domain/service/project.service';
 import { GrantScopeUserDTO } from './../../../../../../src/microservice/domain/dto/grant-scope-user.dto';
 import { LocalAuthGuard } from './../../../../../../src/core/local/local-auth.guard';
 import { mockMongooseModel } from './../../../../../mock/repository/mongoose.mock';
@@ -10,7 +11,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { JwtService } from '@nestjs/jwt';
-import { mockScopesService } from './../../../../../mock/service/service.mock';
+import {
+    mockProjectService,
+    mockScopesService
+} from './../../../../../mock/service/service.mock';
 import { mockValidateUserService } from './../../../../../mock/service/user-service.mock';
 import { mockUserMongoose } from './../../../../../mock/repository/repository.mock';
 import { ScopesMongoose } from './../../../../../../src/microservice/adapter/repository/scopes.repository';
@@ -23,6 +27,7 @@ const mockUser = new User();
 mockUser.username = 'any_username';
 mockUser.password = 'any_password';
 mockUser.projectKey = 'any_projectKey';
+mockUser.active = true;
 
 describe('GrantUserScopesService', () => {
     let sut: GrantUserScopesService;
@@ -55,6 +60,10 @@ describe('GrantUserScopesService', () => {
                 {
                     provide: ConfigService,
                     useValue: mockConfigService
+                },
+                {
+                    provide: ProjectService,
+                    useValue: mockProjectService
                 }
             ]
         })
@@ -75,7 +84,7 @@ describe('GrantUserScopesService', () => {
             mockUser.scopes = [];
 
             const getUserStub = sinon
-                .stub(mockValidateUserService, 'getUserByUsernameAndProject')
+                .stub(sut, 'getAndValidateUser')
                 .returns([mockUser]);
 
             const validateScopeStub = sinon.stub(
@@ -119,7 +128,7 @@ describe('GrantUserScopesService', () => {
             try {
                 await sut.grantScopeForUser(mockDTO);
             } catch (err) {
-                expect(err.message).to.be.equal('User not found!');
+                expect(err.message).to.be.equal('User not found');
             }
 
             sinon.assert.notCalled(updateSpy);
@@ -136,7 +145,7 @@ describe('GrantUserScopesService', () => {
             mockUserActual.scopes = ['scope1', 'scope2'];
 
             const getUserStub = sinon
-                .stub(mockValidateUserService, 'getUserByUsernameAndProject')
+                .stub(sut, 'getAndValidateUser')
                 .returns([mockUserActual]);
 
             const updateSpy = sinon.spy(

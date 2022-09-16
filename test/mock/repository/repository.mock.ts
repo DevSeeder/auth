@@ -13,13 +13,43 @@ export const mockUserMongoose = {
     find: () => {
         return [];
     },
+    findOne: () => {
+        return [];
+    },
+    findById: () => {
+        return [];
+    },
     updatePassword: () => {
+        return;
+    },
+    updateActive: () => {
+        return;
+    },
+    searchUser: () => {
+        return;
+    },
+    updateInfo: () => {
         return;
     }
 };
 
 export const mockMongoose = {
     find: () => {
+        return [];
+    },
+    findOne: () => {
+        return [];
+    }
+};
+
+export const mockScopesMongoose = {
+    find: () => {
+        return [];
+    },
+    findOne: () => {
+        return [];
+    },
+    searchScope: () => {
         return [];
     }
 };
@@ -41,4 +71,19 @@ export const mockSecurityTokensMongoose = () => {
     };
 
     return { ...mock, ...mockMongooseRepo };
+};
+
+export const mockProjectMongoose = {
+    find: () => {
+        return [];
+    },
+    findOne: () => {
+        return [];
+    },
+    searchProject: () => {
+        return [];
+    },
+    getProjectByKey: () => {
+        return;
+    }
 };

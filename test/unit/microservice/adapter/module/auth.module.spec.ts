@@ -1,8 +1,11 @@
+import { ProjectsMongoose } from './../../../../../src/microservice/adapter/repository/projects.repository';
+import { Project } from './../../../../../src/microservice/domain/schema/projects.schema';
 import { JwtAuthGuard } from './../../../../../src/core/jwt/jwt-auth.guard';
 import { Scope } from './../../../../../src/microservice/domain/schema/scopes.schema';
 import { User } from './../../../../../src/microservice/domain/schema/users.schema';
 import {
     mockMongoose,
+    mockProjectMongoose,
     mockUserMongoose
 } from './../../../../mock/repository/repository.mock';
 import { ScopesMongoose } from './../../../../../src/microservice/adapter/repository/scopes.repository';
@@ -56,9 +59,13 @@ describe('AuthModule', () => {
             .useValue(mockUserMongoose)
             .overrideProvider(ScopesMongoose)
             .useValue(mockMongoose)
+            .overrideProvider(ProjectsMongoose)
+            .useValue(mockProjectMongoose)
             .overrideProvider(getModelToken(User.name))
             .useValue(mockMongooseModel)
             .overrideProvider(getModelToken(Scope.name))
+            .useValue(mockMongooseModel)
+            .overrideProvider(getModelToken(Project.name))
             .useValue(mockMongooseModel)
             .overrideProvider(ConfigService)
             .useValue({

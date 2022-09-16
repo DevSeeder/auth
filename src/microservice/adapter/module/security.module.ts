@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { MailModule } from './mail.module';
 import { ConfirmSecurityTokenService } from '../../domain/service/security/confirm-security-token.service';
 import { ValidationTokenService } from '../../../microservice/domain/service/security/validation-token.service';
+import { ProjectsModule } from './projects.module';
 
 @Module({
     imports: [
@@ -22,7 +23,8 @@ import { ValidationTokenService } from '../../../microservice/domain/service/sec
         ]),
         UsersModule,
         ScopesModule,
-        MailModule
+        MailModule,
+        ProjectsModule
     ],
     controllers: [SecurityController],
     providers: [

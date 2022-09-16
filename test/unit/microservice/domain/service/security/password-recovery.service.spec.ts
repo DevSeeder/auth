@@ -15,12 +15,14 @@ import {
     mockConfirmSecurityTokenService,
     mockGenerateSecurityTokenService,
     mockMailService,
+    mockProjectService,
     mockUpdatePasswordService,
     mockUser,
     mockValidateUserService,
     mockValidationTokenService
 } from '../../../../../mock';
 import { GenerateSecurityTokenService } from '../../../../../../src/microservice/domain/service/security/generate-security-token.service';
+import { ProjectService } from '../../../../../../src/microservice/domain/service/project.service';
 
 describe('PasswordRecoveryService', () => {
     let sut: PasswordRecoveryService;
@@ -53,6 +55,10 @@ describe('PasswordRecoveryService', () => {
                 {
                     provide: UpdatePasswordService,
                     useValue: mockUpdatePasswordService
+                },
+                {
+                    provide: ProjectService,
+                    useValue: mockProjectService
                 }
             ]
         }).compile();

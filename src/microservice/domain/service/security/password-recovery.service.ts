@@ -12,6 +12,7 @@ import { ConfirmSecurityTokenService } from './confirm-security-token.service';
 import { ValidationTokenService } from './validation-token.service';
 import { UpdatePasswordService } from '../users/update-password.service';
 import { UpdatePasswordCodeDTO } from '../../dto/update-password.dto';
+import { ProjectService } from '../project.service';
 
 const CODE_LENGHT = 6;
 const EXPIRES = '3h';
@@ -24,7 +25,8 @@ export class PasswordRecoveryService extends AbstractService {
         private validationTokenService: ValidationTokenService,
         private validateUserService: ValidateUserService,
         private updatePasswordService: UpdatePasswordService,
-        private mailService: MailService
+        private mailService: MailService,
+        protected readonly projectService: ProjectService
     ) {
         super();
     }
@@ -33,6 +35,8 @@ export class PasswordRecoveryService extends AbstractService {
         username: string,
         projectKey: string
     ): Promise<CustomResponse> {
+        await this.projectService.validateProjectByKey(projectKey);
+
         const user = await this.validateUserService.getAndValidateUser(
             username,
             projectKey
@@ -59,6 +63,8 @@ export class PasswordRecoveryService extends AbstractService {
         projectKey: string,
         code: string
     ): Promise<CustomResponse> {
+        await this.projectService.validateProjectByKey(projectKey);
+
         const user = await this.validateUserService.getAndValidateUser(
             username,
             projectKey
@@ -92,6 +98,8 @@ export class PasswordRecoveryService extends AbstractService {
     async updateRecoverPassword(
         passDto: UpdatePasswordCodeDTO
     ): Promise<CustomResponse> {
+        await this.projectService.validateProjectByKey(passDto.projectKey);
+
         await this.validationTokenService.checkValidationToken(
             passDto.validationTokenId,
             passDto.validationCode

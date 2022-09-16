@@ -10,11 +10,14 @@ import { CreateUserService } from '../../domain/service/users/create-user.servic
 import { GrantUserScopesService } from '../../../microservice/domain/service/users/grant-user-scopes.service';
 import { ValidateUserService } from '../../../microservice/domain/service/users/validate-user.service';
 import { UpdatePasswordService } from '../../../microservice/domain/service/users/update-password.service';
+import { ProjectsModule } from './projects.module';
+import { UpdateUserService } from '../../../microservice/domain/service/users/update-user.service';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
         ScopesModule,
+        ProjectsModule,
         PassportModule.register({ defaultStrategy: 'jwt' })
     ],
     controllers: [UsersController],
@@ -24,13 +27,15 @@ import { UpdatePasswordService } from '../../../microservice/domain/service/user
         JwtService,
         CreateUserService,
         ValidateUserService,
-        UpdatePasswordService
+        UpdatePasswordService,
+        UpdateUserService
     ],
     exports: [
         GrantUserScopesService,
         CreateUserService,
         ValidateUserService,
-        UpdatePasswordService
+        UpdatePasswordService,
+        UpdateUserService
     ]
 })
 export class UsersModule {}

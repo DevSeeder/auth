@@ -19,6 +19,9 @@ export class User {
 
     @Prop({ required: false, type: Array })
     scopes?: string[];
+
+    @Prop({ required: false, type: Boolean })
+    active?: boolean;
 }
 
 const schema = SchemaFactory.createForClass(User);

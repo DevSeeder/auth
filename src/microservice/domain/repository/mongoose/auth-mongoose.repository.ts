@@ -26,4 +26,19 @@ export abstract class AuthMongooseRepository<
 
         return res.select(select).lean().exec();
     }
+
+    async findOne<ResponseDB>(
+        searchParams: any,
+        select: any = {},
+        sort: any = {}
+    ): Promise<ResponseDB & MongooseDocument> {
+        if (Object.keys(select).length === 0) select = { _id: 0 };
+
+        let res = this.model.findOne(searchParams);
+
+        if (typeof sort === 'object' && Object.keys(sort).length > 0)
+            res = res.sort(sort);
+
+        return res.select(select).lean().exec();
+    }
 }

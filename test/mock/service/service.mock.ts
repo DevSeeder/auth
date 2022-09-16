@@ -10,5 +10,20 @@ export const mockScopesService = {
     },
     validateScopeById: () => {
         return;
+    },
+    searchScopes: () => {
+        return;
+    }
+};
+
+export const mockProjectService = {
+    searchProject: () => {
+        return;
+    },
+    getProjectByKey: () => {
+        return;
+    },
+    validateProjectByKey: () => {
+        return;
     }
 };
