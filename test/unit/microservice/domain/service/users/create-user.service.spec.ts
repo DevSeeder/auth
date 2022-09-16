@@ -1,3 +1,5 @@
+import { mockProjectService } from './../../../../../mock/service/service.mock';
+import { ProjectService } from './../../../../../../src/microservice/domain/service/project.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LocalAuthGuard } from '../../../../../../src/core/local/local-auth.guard';
 import { UsersMongoose } from '../../../../../../src/microservice/adapter/repository/users.repository';
@@ -50,6 +52,10 @@ describe('CreateUserService', () => {
                 {
                     provide: ConfigService,
                     useValue: mockConfigService
+                },
+                {
+                    provide: ProjectService,
+                    useValue: mockProjectService
                 }
             ]
         })

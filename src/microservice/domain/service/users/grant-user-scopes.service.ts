@@ -1,9 +1,4 @@
-import {
-    HttpStatus,
-    Injectable,
-    Logger,
-    NotFoundException
-} from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { ValidateUserService } from './validate-user.service';
 import { DTO } from '@devseeder/nestjs-microservices-commons';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
@@ -14,6 +9,7 @@ import { CustomErrorException } from '@devseeder/microservices-exceptions';
 import { ForbbidenScopeException } from '../../../../core/error-handling/forbbiden-scope.exception';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
+import { ProjectService } from '../project.service';
 
 @Injectable()
 export class GrantUserScopesService extends UserService {
@@ -21,21 +17,21 @@ export class GrantUserScopesService extends UserService {
         protected readonly userRepository: UsersMongoose,
         private readonly getUserService: ValidateUserService,
         private readonly scopeService: ScopesService,
-        protected configService: ConfigService
+        protected configService: ConfigService,
+        protected readonly projectService: ProjectService
     ) {
-        super(userRepository, configService);
+        super(userRepository, configService, projectService);
     }
 
     async grantScopeForUser(scopeDTO: GrantScopeUserDTO): Promise<any> {
         DTO.validateIsAnyEmptyKey(scopeDTO);
 
-        const userDB: User[] =
-            await this.getUserService.getUserByUsernameAndProject(
-                scopeDTO.username,
-                scopeDTO.projectKey
-            );
+        await this.projectService.validateProjectByKey(scopeDTO.projectKey);
 
-        if (userDB.length === 0) throw new NotFoundException('User not found!');
+        const userDB: User[] = await this.getAndValidateUser(
+            scopeDTO.username,
+            scopeDTO.projectKey
+        );
 
         const scopes = scopeDTO.scopes.filter((scope) => {
             return userDB[0].scopes.indexOf(scope) == -1;
@@ -63,6 +59,8 @@ export class GrantUserScopesService extends UserService {
         projectKey: string,
         scopes: string[]
     ): Promise<void> {
+        await this.projectService.validateProjectByKey(projectKey);
+
         const userScopesDB = await this.userRepository.getScopesByUser(
             username,
             projectKey

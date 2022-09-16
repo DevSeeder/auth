@@ -5,9 +5,10 @@ import { mockUserPassword } from './../../../../../mock/model/user.mock';
 import { UpdatePasswordService } from './../../../../../../src/microservice/domain/service/users/update-password.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as sinon from 'sinon';
-import { mockUserMongoose } from '../../../../../mock';
+import { mockProjectService, mockUserMongoose } from '../../../../../mock';
 import { expect } from 'chai';
 import { UsersMongoose } from '../../../../../../src/microservice/adapter/repository/users.repository';
+import { ProjectService } from '../../../../../../src/microservice/domain/service/project.service';
 
 describe('UpdatePasswordService', () => {
     let sut: UpdatePasswordService;
@@ -23,6 +24,10 @@ describe('UpdatePasswordService', () => {
                 {
                     provide: ConfigService,
                     useValue: mockConfigService
+                },
+                {
+                    provide: ProjectService,
+                    useValue: mockProjectService
                 }
             ]
         }).compile();

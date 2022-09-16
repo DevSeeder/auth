@@ -42,4 +42,50 @@ describe('ScopesMongoose', () => {
             getUserStub.restore();
         });
     });
+
+    describe('searchScope', () => {
+        it('should call searchScope correctly', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([new Scope()]);
+
+            const actual = await sut.searchScope(
+                'any',
+                'any_projectKey',
+                'any_resourceKey'
+            );
+
+            expect(actual).to.be.deep.equal([new Scope()]);
+
+            getUserStub.restore();
+        });
+
+        it('should call searchScope correctly default resourceKey', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([new Scope()]);
+
+            const actual = await sut.searchScope('any', 'any_projectKey');
+
+            expect(actual).to.be.deep.equal([new Scope()]);
+
+            getUserStub.restore();
+        });
+
+        it('should call searchScope correctly default projectKey', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([new Scope()]);
+
+            const actual = await sut.searchScope('any');
+
+            expect(actual).to.be.deep.equal([new Scope()]);
+
+            getUserStub.restore();
+        });
+
+        it('should call searchScope correctly default params', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([new Scope()]);
+
+            const actual = await sut.searchScope('');
+
+            expect(actual).to.be.deep.equal([new Scope()]);
+
+            getUserStub.restore();
+        });
+    });
 });

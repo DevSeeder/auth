@@ -6,21 +6,25 @@ import {
 } from '../../../../core/error-handling/invalid-update-password.exception';
 import { UsersMongoose } from '../../../adapter/repository/users.repository';
 import { UpdatePasswordDTO } from '../../dto/update-password.dto';
+import { ProjectService } from '../project.service';
 import { UserService } from './user.service';
 
 @Injectable()
 export class UpdatePasswordService extends UserService {
     constructor(
         protected readonly userRepository: UsersMongoose,
-        protected configService: ConfigService
+        protected configService: ConfigService,
+        protected readonly projectService: ProjectService
     ) {
-        super(userRepository, configService);
+        super(userRepository, configService, projectService);
     }
 
     async updatePassword(
         passwordDTO: UpdatePasswordDTO,
         actualValidate = true
     ): Promise<void> {
+        await this.projectService.validateProjectByKey(passwordDTO.projectKey);
+
         await this.validatePassword(passwordDTO, actualValidate);
         await this.updateDBPassword(
             passwordDTO.username,
