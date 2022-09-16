@@ -13,6 +13,15 @@ export const mockValidateUserService = {
     },
     getAndValidateUser: () => {
         return [];
+    },
+    getAndValidateUserById: () => {
+        return [];
+    },
+    searchUser: () => {
+        return [];
+    },
+    getById: () => {
+        return;
     }
 };
 
@@ -33,6 +42,15 @@ export const mockUpdatePasswordService = {
         return;
     },
     updateDBPassword: () => {
+        return;
+    }
+};
+
+export const mockUpdateUserService = {
+    updateById: () => {
+        return;
+    },
+    updateUserActive: () => {
         return;
     }
 };

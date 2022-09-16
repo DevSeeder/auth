@@ -29,9 +29,9 @@ export class ScopesService extends AbstractService {
     async searchScopes(
         id = '',
         projectKey = '',
-        ressourceKey = ''
+        resourceKey = ''
     ): Promise<Scope[]> {
-        return this.scopeRepository.searchScope(id, projectKey, ressourceKey);
+        return this.scopeRepository.searchScope(id, projectKey, resourceKey);
     }
 
     async validateScopeById(scopeID: string): Promise<void> {

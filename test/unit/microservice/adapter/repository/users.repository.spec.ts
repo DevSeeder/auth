@@ -116,4 +116,64 @@ describe('UsersMongoose', () => {
             updateSpy.restore();
         });
     });
+
+    describe('updateInfo', () => {
+        it('should call updateInfo and call updateOne correctly', async () => {
+            const updateSpy = sinon.spy(mockMongooseModel, 'findByIdAndUpdate');
+
+            await sut.updateInfo('any', mockUser);
+
+            sinon.assert.calledOnceWithExactly(updateSpy, 'any', {
+                $set: mockUser
+            });
+
+            updateSpy.restore();
+        });
+    });
+
+    describe('updateActive', () => {
+        it('should call updateActive and call updateOne correctly', async () => {
+            const updateSpy = sinon.spy(mockMongooseModel, 'findByIdAndUpdate');
+
+            await sut.updateActive('any', true);
+
+            sinon.assert.calledOnceWithExactly(updateSpy, 'any', {
+                $set: { active: true }
+            });
+
+            updateSpy.restore();
+        });
+    });
+
+    describe('searchUser', () => {
+        it('should call searchUser correctly', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([mockUser]);
+
+            const actual = await sut.searchUser('any', 'any_projectKey');
+
+            expect(actual).to.be.deep.equal([mockUser]);
+
+            getUserStub.restore();
+        });
+
+        it('should call searchUser correctly default projectKey', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([mockUser]);
+
+            const actual = await sut.searchUser('any');
+
+            expect(actual).to.be.deep.equal([mockUser]);
+
+            getUserStub.restore();
+        });
+
+        it('should call searchUser correctly default params', async () => {
+            const getUserStub = sinon.stub(sut, 'find').returns([mockUser]);
+
+            const actual = await sut.searchUser();
+
+            expect(actual).to.be.deep.equal([mockUser]);
+
+            getUserStub.restore();
+        });
+    });
 });

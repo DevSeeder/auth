@@ -4,6 +4,8 @@ export const mockUser = () => {
     user.name = 'any_name';
     user.username = 'any_username';
     user.projectKey = 'any_projectKey';
+    user.active = true;
+
     return { ...user, _id: 1 };
 };
 
@@ -12,6 +14,7 @@ export const mockUserPassword = (pass = 'any_password') => {
     user.name = 'any_name';
     user.password = pass;
     user.username = 'any_username';
+    user.active = true;
     user.projectKey = 'any_projectKey';
     return { ...user, _id: 1 };
 };

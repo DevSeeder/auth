@@ -1,7 +1,10 @@
 import { mockMongooseModel } from './../../../../mock/repository/mongoose.mock';
 import { UsersMongoose } from './../../../../../src/microservice/adapter/repository/users.repository';
 import { mockUserMongoose } from './../../../../mock/repository/repository.mock';
-import { mockScopesService } from './../../../../mock/service/service.mock';
+import {
+    mockProjectService,
+    mockScopesService
+} from './../../../../mock/service/service.mock';
 import { ScopesService } from './../../../../../src/microservice/domain/service/scopes.service';
 import { GrantUserScopesService } from './../../../../../src/microservice/domain/service/users/grant-user-scopes.service';
 import { AuthService } from './../../../../../src/microservice/domain/service/auth.service';
@@ -12,6 +15,7 @@ import { JwtService } from '@nestjs/jwt';
 import { mockGrantUserScopesService } from './../../../../mock/service/user-service.mock';
 import { mockJWTService } from './../../../../mock/service/jwt-service.mock';
 import { ScopesMongoose } from './../../../../../src/microservice/adapter/repository/scopes.repository';
+import { ProjectService } from './../../../../../src/microservice/domain/service/project.service';
 
 describe('AuthService', () => {
     let sut: AuthService;
@@ -40,6 +44,10 @@ describe('AuthService', () => {
                 {
                     provide: JwtService,
                     useValue: mockJWTService
+                },
+                {
+                    provide: ProjectService,
+                    useValue: mockProjectService
                 }
             ]
         }).compile();
