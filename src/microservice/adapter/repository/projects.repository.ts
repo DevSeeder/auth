@@ -16,7 +16,7 @@ export class ProjectsMongoose extends AuthMongooseRepository<
         super(model);
     }
 
-    async searchProject(name: string): Promise<Array<Project>> {
+    async searchProject(name = ''): Promise<Array<Project>> {
         const regexName = new RegExp(name, 'i');
         return this.find<Project[]>(
             {

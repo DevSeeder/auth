@@ -1,3 +1,4 @@
+import { mockUser } from './../../../../mock/model/user.mock';
 import { mockMongooseModel } from './../../../../mock/repository/mongoose.mock';
 import { UsersMongoose } from './../../../../../src/microservice/adapter/repository/users.repository';
 import { mockUserMongoose } from './../../../../mock/repository/repository.mock';
@@ -58,12 +59,17 @@ describe('AuthService', () => {
     describe('loginWithCredentials', () => {
         it('should call loginWithCredentials and return a JSON token', async () => {
             const mockResponseToken = {
+                userId: 1,
                 token: 'any_token'
             };
 
             const authServiceStub = sinon
                 .stub(mockJWTService, 'sign')
                 .returns('any_token');
+
+            const getUserStub = sinon
+                .stub(mockGrantUserScopesService, 'getAndValidateUser')
+                .returns(mockUser());
 
             const actual = await sut.loginWithCredentials(
                 'any',
@@ -75,6 +81,7 @@ describe('AuthService', () => {
             );
 
             authServiceStub.restore();
+            getUserStub.restore();
         });
     });
 });

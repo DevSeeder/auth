@@ -127,7 +127,7 @@ describe('UsersController', () => {
                 .stub(mockValidateUserService, 'searchUser')
                 .returns([new User()]);
 
-            const actual = await sut.searchUser('any', 'any');
+            const actual = await sut.searchUser('any', 'any', true);
             expect(JSON.stringify(actual)).to.be.equal(
                 JSON.stringify([new User()])
             );

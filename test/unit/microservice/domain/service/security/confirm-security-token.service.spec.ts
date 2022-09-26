@@ -96,6 +96,7 @@ describe('ConfirmSecurityTokenService', () => {
             const mockDate = DateHelper.GetDateNow();
             mockDate.setHours(-12);
             mockActual.expirationDate = mockDate;
+            mockActual.attemps = [];
 
             const checkStub = sinon
                 .stub(mockRepo, 'checkConfirmationCode')

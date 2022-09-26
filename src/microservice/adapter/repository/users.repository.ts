@@ -84,10 +84,14 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
         });
     }
 
-    async searchUser(name = '', projectKey = ''): Promise<Array<User>> {
+    async searchUser(
+        name = '',
+        projectKey = '',
+        onlyActive = true
+    ): Promise<Array<User>> {
         const regexName = new RegExp(name, 'i');
 
-        const searchParams = { active: true };
+        const searchParams = { active: { $in: [true, onlyActive] } };
 
         if (name.length > 0)
             searchParams['$or'] = [
@@ -102,7 +106,7 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
 
         return this.find<User[]>(
             searchParams,
-            { _id: 1, name: 1, username: 1, projectKey: 1 },
+            { _id: 1, name: 1, username: 1, projectKey: 1, active: 1 },
             { scopeID: 1 }
         );
     }
