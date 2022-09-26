@@ -1,6 +1,6 @@
 {
     "name": "auth",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "description": "",
     "author": "",
     "private": true,
@@ -21,7 +21,7 @@
         "test:e2e": "jest --config ./test/jest-e2e.json"
     },
     "dependencies": {
-        "@devseeder/microservices-exceptions": "^1.0.6",
+        "@devseeder/microservices-exceptions": "^1.0.7",
         "@devseeder/nestjs-microservices-commons": "^1.0.4",
         "@devseeder/nestjs-microservices-core": "^1.0.0",
         "@golevelup/ts-jest": "^0.3.3",
