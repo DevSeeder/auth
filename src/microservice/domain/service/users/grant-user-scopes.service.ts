@@ -28,13 +28,13 @@ export class GrantUserScopesService extends UserService {
 
         await this.projectService.validateProjectByKey(scopeDTO.projectKey);
 
-        const userDB: User[] = await this.getAndValidateUser(
+        const userDB: User = await this.getAndValidateUser(
             scopeDTO.username,
             scopeDTO.projectKey
         );
 
         const scopes = scopeDTO.scopes.filter((scope) => {
-            return userDB[0].scopes.indexOf(scope) == -1;
+            return userDB.scopes.indexOf(scope) == -1;
         });
 
         if (scopes.length === 0)
