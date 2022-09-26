@@ -10,7 +10,7 @@ export class ProjectService extends AbstractService {
     constructor(private projectRepository: ProjectsMongoose) {
         super();
     }
-    async searchProject(key: string): Promise<Project[]> {
+    async searchProject(key = ''): Promise<Project[]> {
         return this.projectRepository.searchProject(key);
     }
 

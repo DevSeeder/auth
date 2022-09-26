@@ -48,9 +48,10 @@ export class UsersController {
     @Get('/search?')
     async searchUser(
         @Query('name') name: string,
-        @Query('projectKey') projectKey: string
+        @Query('projectKey') projectKey: string,
+        @Query('active') onlyActive: boolean
     ) {
-        return this.getUserService.searchUser(name, projectKey);
+        return this.getUserService.searchUser(name, projectKey, onlyActive);
     }
 
     @UseGuards(JwtAuthGuard)
