@@ -1,7 +1,7 @@
 import { EnumAuthScopes } from './../../domain/enum/enum-auth-scopes.enum';
 import { JwtAuthGuard } from './../../../core/jwt/jwt-auth.guard';
 import { ProjectService } from './../../domain/service/project.service';
-import { Controller, UseGuards, Param, Get } from '@nestjs/common';
+import { Controller, UseGuards, Param, Get, Query } from '@nestjs/common';
 import { Scopes } from '@devseeder/nestjs-microservices-core';
 
 @Controller('projects')
@@ -10,8 +10,8 @@ export class ProjectController {
 
     @UseGuards(JwtAuthGuard)
     @Scopes(EnumAuthScopes.GET_PROJECT)
-    @Get('/search/:key')
-    async searchProject(@Param('key') key: string) {
+    @Get('/search')
+    async searchProject(@Query('key') key: string) {
         return await this.projectService.searchProject(key);
     }
 
