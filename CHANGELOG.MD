@@ -51,3 +51,13 @@ All notable changes to this project will be documented in this file.
 -   Get Scope By Id route
 -   Search Project route
 -   Get Project By key or name route
+
+## [4.0.4] - 2022-09-26
+
+### Added
+
+-   Search Scope with query params
+-   Search user by active param
+-   Fix status problem for confirm code
+-   Return UserId in login
+-   Filter scopes option in login
