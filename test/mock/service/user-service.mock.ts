@@ -31,6 +31,9 @@ export const mockGrantUserScopesService = {
     },
     validateScopesForUser: () => {
         return;
+    },
+    getAndValidateUser: () => {
+        return;
     }
 };
 
