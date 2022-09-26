@@ -17,7 +17,8 @@ export class AuthService {
     async loginWithCredentials(
         headerAuth: string,
         projectKey: string,
-        scopes: string[]
+        scopes: string[],
+        filterScopes = '0'
     ) {
         const user = AuthenticatorExtractorHelper.extractBasicAuth(headerAuth);
 
@@ -25,15 +26,22 @@ export class AuthService {
 
         await this.scopesService.validateScopes(scopes);
 
-        await this.usersService.validateScopesForUser(
+        const filteredScopes = await this.usersService.validateScopesForUser(
             user.username,
             projectKey,
-            scopes
+            scopes,
+            filterScopes == '1'
         );
 
-        const payload = { username: user.username, scopes: scopes };
+        const userDB = await this.usersService.getAndValidateUser(
+            user.username,
+            projectKey
+        );
+
+        const payload = { username: user.username, scopes: filteredScopes };
 
         return {
+            userId: userDB._id,
             token: this.jwtTokenService.sign(payload)
         };
     }

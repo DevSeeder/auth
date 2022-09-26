@@ -13,7 +13,8 @@ export class AuthController {
         return await this.authService.loginWithCredentials(
             req.headers.authorization,
             req.headers.projectkey,
-            scopes
+            scopes,
+            req.headers.filterscopes || false
         );
     }
 }

@@ -57,8 +57,9 @@ export class GrantUserScopesService extends UserService {
     async validateScopesForUser(
         username: string,
         projectKey: string,
-        scopes: string[]
-    ): Promise<void> {
+        scopes: string[],
+        filterScopes = false
+    ): Promise<string[]> {
         await this.projectService.validateProjectByKey(projectKey);
 
         const userScopesDB = await this.userRepository.getScopesByUser(
@@ -66,14 +67,25 @@ export class GrantUserScopesService extends UserService {
             projectKey
         );
 
+        const filteredScopes = [];
+
         for (const item of scopes) {
             const admScope = this.getAdmScope(item);
             if (
                 userScopesDB.indexOf(item) === -1 &&
                 userScopesDB.indexOf(admScope) === -1
-            )
-                throw new ForbbidenScopeException(item);
+            ) {
+                if (!filterScopes) throw new ForbbidenScopeException(item);
+            } else filteredScopes.push(item);
         }
+
+        if (filterScopes && filteredScopes.length === 0)
+            throw new CustomErrorException(
+                'None of the scopes are authorized',
+                HttpStatus.FORBIDDEN
+            );
+
+        return filteredScopes;
     }
 
     private getAdmScope(scope: string): string {
