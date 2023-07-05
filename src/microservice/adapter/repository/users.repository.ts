@@ -17,6 +17,7 @@ export class UsersMongoose extends AuthMongooseRepository<User, UserDocument> {
 
     async createUser(user: User) {
         user.scopes = [];
+        user.active = true;
         return this.insertOne(user, 'User');
     }
 
