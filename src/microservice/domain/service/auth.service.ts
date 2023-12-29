@@ -38,7 +38,11 @@ export class AuthService {
             projectKey
         );
 
-        const payload = { username: user.username, scopes: filteredScopes };
+        const payload = {
+            username: user.username,
+            scopes: filteredScopes,
+            userId: userDB._id
+        };
 
         return {
             userId: userDB._id,
