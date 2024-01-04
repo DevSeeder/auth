@@ -5,12 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Project, ProjectSchema } from '../../domain/schema/projects.schema';
 import { ProjectController } from '../controller/project.controller';
 import { JwtService } from '@nestjs/jwt';
+import { ScopesModule } from './scopes.module';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
             { name: Project.name, schema: ProjectSchema }
-        ])
+        ]),
+        ScopesModule
     ],
     controllers: [ProjectController],
     providers: [ProjectService, ProjectsMongoose, JwtService],

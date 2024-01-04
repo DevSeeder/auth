@@ -1,13 +1,13 @@
 import { AbstractService } from '@devseeder/nestjs-microservices-commons';
 import {
     Injectable,
-    Logger,
     NotAcceptableException,
     NotFoundException
 } from '@nestjs/common';
 import { ScopesMongoose } from '../../adapter/repository/scopes.repository';
 import * as dotenv from 'dotenv';
 import { Scope } from '../schema/scopes.schema';
+import { CreateScopeDTO } from '../dto/create-scope.dto';
 
 dotenv.config();
 
@@ -44,5 +44,11 @@ export class ScopesService extends AbstractService {
             throw new NotFoundException(`Scope '${scopeID}' is invalid!`);
 
         return scopeRes[0];
+    }
+
+    async createScope(item: CreateScopeDTO): Promise<void> {
+        this.logger.log(`Creating Scope id '${item.scopeID}'...`);
+        await this.scopeRepository.insertOne(item, 'Scope');
+        this.logger.log('Scope created.');
     }
 }
